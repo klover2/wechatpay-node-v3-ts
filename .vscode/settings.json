@@ -1,0 +1,13 @@
+{
+    "editor.codeActionsOnSave": {
+      "source.fixAll.tslint": true,
+      "source.fixAll.eslint": true,
+      "source.fixAll.stylelint": true
+    },
+    "editor.formatOnSave": true,
+    "files.associations": {
+      "tslint.json": "jsonc",
+      "package.json": "jsonc"
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }

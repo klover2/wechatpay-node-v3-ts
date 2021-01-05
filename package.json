@@ -1,0 +1,38 @@
+{
+  "name": "wechatpay-node-v3",
+  "version": "0.0.1",
+  "description": "微信支付文档v3",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf ./dist && tsc",
+    "release": "npm publish"
+  },
+  "dependencies": {
+    "superagent": "^6.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.12",
+    "@types/superagent": "^4.1.10",
+    "@typescript-eslint/eslint-plugin": "^4.9.1",
+    "@typescript-eslint/parser": "^4.9.1",
+    "eslint": "^7.15.0",
+    "eslint-config-prettier": "^7.0.0",
+    "eslint-plugin-prettier": "^3.2.0",
+    "prettier": "^2.2.1",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.2"
+  },
+  "files": [
+    "dist"
+   ],
+  "keywords": [
+    "node",
+    "wechat",
+    "微信支付",
+    "微信提现"
+  ],
+  "author": "klover",
+  "license": "MIT"
+}
