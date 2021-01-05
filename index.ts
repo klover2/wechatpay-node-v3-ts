@@ -85,7 +85,8 @@ class Pay {
     body?: string | object
   ): string {
     let str = method + '\n' + url + '\n' + timestamp + '\n' + nonce_str + '\n';
-    if (body) str = str + JSON.stringify(body) + '\n';
+    if (body && body instanceof Object) body = JSON.stringify(body);
+    if (body) str = str + body + '\n';
     return this.sha256WithRsa(str);
   }
   /**
