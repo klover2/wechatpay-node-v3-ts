@@ -11,7 +11,7 @@
 由于官方文档只支持java和php,所以我在这里使用ts简单的封装了一个版本（参数处理和参数加密),支持在js或者ts中使用,后续会更加完善这个npm包，谢谢。
 
 ## 使用
-yarn add wechatpay-node-v3(也可以用npm)
+`yarn add wechatpay-node-v3`(也可以用npm)
 
 ```bash
 import WxPay from 'wechatpay-node-v3';
@@ -72,3 +72,12 @@ try {
     console.log(error);
   }
 ```
+
+## 注意
+1. serial_no是证书序列号 请在命令窗口使用 `openssl x509 -in apiclient_cert.pem -noout -serial` 获取
+2. 头部参数需要添加 User-Agent 参数
+
+## 文档
+[v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)
+[v3支付文档](https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml)
+[v2支付npm包](https://www.npmjs.com/package/node-wxpay3)
