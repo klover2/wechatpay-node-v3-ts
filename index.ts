@@ -108,7 +108,6 @@ class Pay {
         str = str + params[key] + '\n';
       }
     }
-    console.log(str);
     return this.sha256WithRsa(str);
   }
   /**
