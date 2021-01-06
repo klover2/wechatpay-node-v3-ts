@@ -2,7 +2,16 @@
 import crypto from 'crypto';
 import request from 'superagent';
 
-import {Ipay, Ih5, Iquery1, Iquery2, Itradebill, Ifundflowbill} from './lib/interface';
+import {
+  Ipay,
+  Ih5,
+  Inative,
+  Ijsapi,
+  Iquery1,
+  Iquery2,
+  Itradebill,
+  Ifundflowbill,
+} from './lib/interface';
 
 class Pay {
   private appid: string; //  直连商户申请的公众号或移动应用appid。
@@ -83,6 +92,17 @@ class Pay {
     if (body && body instanceof Object) body = JSON.stringify(body);
     if (body) str = str + body + '\n';
     if (method === 'GET') str = str + '\n';
+    return this.sha256WithRsa(str);
+  }
+  // jsapi 和 app 支付参数签名
+  private sign(params: any) {
+    let str = '';
+    for (const key in params) {
+      if (!(key === 'signType' || key === 'paySign' || key === 'status')) {
+        str = str + params[key] + '\n';
+      }
+    }
+    console.log(str);
     return this.sha256WithRsa(str);
   }
   /**
@@ -228,6 +248,54 @@ class Pay {
     const authorization = this.init('POST', url, _params);
 
     return await this.postRequest(url, _params, authorization);
+  }
+  /**
+   * native支付
+   * @param params 请求参数 object 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_4_1.shtml
+   */
+  public async transactions_native(params: Inative): Promise<object> {
+    // 请求参数
+    const _params = {
+      appid: this.appid,
+      mchid: this.mchid,
+      ...params,
+    };
+    const url = 'https://api.mch.weixin.qq.com/v3/pay/transactions/native';
+
+    const authorization = this.init('POST', url, _params);
+
+    return await this.postRequest(url, _params, authorization);
+  }
+  /**
+   * JSAPI支付 或者 小程序支付
+   * @param params 请求参数 object 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_4.shtml
+   */
+  public async transactions_jsapi(params: Ijsapi): Promise<object> {
+    // 请求参数
+    const _params = {
+      appid: this.appid,
+      mchid: this.mchid,
+      ...params,
+    };
+    const url = 'https://api.mch.weixin.qq.com/v3/pay/transactions/jsapi';
+
+    const authorization = this.init('POST', url, _params);
+
+    const result: any = await this.postRequest(url, _params, authorization);
+    if (result.status === 200 && result.prepay_id) {
+      const data = {
+        status: result.status,
+        appId: this.appid,
+        timeStamp: parseInt(+new Date() / 1000 + '').toString(),
+        nonceStr: Math.random().toString(36).substr(2, 15),
+        package: `prepay_id=${result.prepay_id}`,
+        signType: 'RSA',
+        paySign: '',
+      };
+      data.paySign = this.sign(data);
+      return data;
+    }
+    return result;
   }
   /**
    * 查询订单

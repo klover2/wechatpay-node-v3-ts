@@ -17,12 +17,21 @@ interface IgoodsDetail {
   quantity: number;
   unit_price: number;
 }
+// 支付者
+interface Ipayer {
+  openid: string;
+}
 // 支付场景描述
 interface IsceneInfoH5 {
   payer_client_ip: string;
   device_id?: string;
   store_info?: IstoreInfo;
   h5_info: Ih5Info;
+}
+interface IsceneInfoNative {
+  payer_client_ip: string;
+  device_id?: string;
+  store_info?: IstoreInfo;
 }
 // 商户门店信息
 interface IstoreInfo {
@@ -59,6 +68,29 @@ export interface Ih5 {
   amount: Iamount;
   detail?: Idetail;
   scene_info: IsceneInfoH5;
+}
+export interface Inative {
+  description: string;
+  out_trade_no: string;
+  time_expire?: string;
+  attach?: string;
+  notify_url: string;
+  goods_tag?: string;
+  amount: Iamount;
+  detail?: Idetail;
+  scene_info: IsceneInfoNative;
+}
+export interface Ijsapi {
+  description: string;
+  out_trade_no: string;
+  time_expire?: string;
+  attach?: string;
+  notify_url: string;
+  goods_tag?: string;
+  amount: Iamount;
+  payer: Ipayer;
+  detail?: Idetail;
+  scene_info: IsceneInfoNative;
 }
 export interface Iquery1 {
   transaction_id: string;
