@@ -92,6 +92,17 @@ export interface Ijsapi {
   detail?: Idetail;
   scene_info: IsceneInfoNative;
 }
+export interface Iapp {
+  description: string;
+  out_trade_no: string;
+  time_expire?: string;
+  attach?: string;
+  notify_url: string;
+  goods_tag?: string;
+  amount: Iamount;
+  detail?: Idetail;
+  scene_info: IsceneInfoNative;
+}
 export interface Iquery1 {
   transaction_id: string;
   out_trade_no?: string;

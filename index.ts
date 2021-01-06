@@ -11,6 +11,7 @@ import {
   Iquery2,
   Itradebill,
   Ifundflowbill,
+  Iapp,
 } from './lib/interface';
 
 class Pay {
@@ -94,11 +95,16 @@ class Pay {
     if (method === 'GET') str = str + '\n';
     return this.sha256WithRsa(str);
   }
-  // jsapi 和 app 支付参数签名
+  // jsapi 和 app 支付参数签名 加密自动顺序如下 不能错乱
+  // 应用id
+  // 时间戳
+  // 随机字符串
+  // 预支付交易会话ID
   private sign(params: any) {
     let str = '';
+    const exclude = ['signType', 'paySign', 'status', 'package', 'partnerid'];
     for (const key in params) {
-      if (!(key === 'signType' || key === 'paySign' || key === 'status')) {
+      if (!exclude.includes(key)) {
         str = str + params[key] + '\n';
       }
     }
@@ -267,8 +273,40 @@ class Pay {
     return await this.postRequest(url, _params, authorization);
   }
   /**
+   * app支付
+   * @param params 请求参数 object 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_1.shtml
+   */
+  public async transactions_app(params: Iapp): Promise<object> {
+    // 请求参数
+    const _params = {
+      appid: this.appid,
+      mchid: this.mchid,
+      ...params,
+    };
+    const url = 'https://api.mch.weixin.qq.com/v3/pay/transactions/app';
+
+    const authorization = this.init('POST', url, _params);
+
+    const result: any = await this.postRequest(url, _params, authorization);
+    if (result.status === 200 && result.prepay_id) {
+      const data = {
+        status: result.status,
+        appid: this.appid,
+        partnerid: this.mchid,
+        package: 'Sign=WXPay',
+        timestamp: parseInt(+new Date() / 1000 + '').toString(),
+        noncestr: Math.random().toString(36).substr(2, 15),
+        prepayid: result.prepay_id,
+        paySign: '',
+      };
+      data.paySign = this.sign(data);
+      return data;
+    }
+    return result;
+  }
+  /**
    * JSAPI支付 或者 小程序支付
-   * @param params 请求参数 object 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_4.shtml
+   * @param params 请求参数 object 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_1.shtml
    */
   public async transactions_jsapi(params: Ijsapi): Promise<object> {
     // 请求参数
