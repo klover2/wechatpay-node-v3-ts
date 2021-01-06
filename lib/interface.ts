@@ -60,3 +60,11 @@ export interface Ih5 {
   detail?: Idetail;
   scene_info: IsceneInfoH5;
 }
+export interface query1 {
+  transaction_id: string;
+  out_trade_no?: string;
+}
+export interface query2 {
+  transaction_id?: string;
+  out_trade_no: string;
+}

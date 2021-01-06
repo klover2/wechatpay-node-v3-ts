@@ -2,7 +2,7 @@
 import crypto from 'crypto';
 import request from 'superagent';
 
-import {Ipay, Ih5} from './lib/interface';
+import {Ipay, Ih5, query1, query2} from './lib/interface';
 
 class Pay {
   private appid: string; //  直连商户申请的公众号或移动应用appid。
@@ -82,6 +82,7 @@ class Pay {
     let str = method + '\n' + url + '\n' + timestamp + '\n' + nonce_str + '\n';
     if (body && body instanceof Object) body = JSON.stringify(body);
     if (body) str = str + body + '\n';
+    if (method === 'GET') str = str + '\n';
     return this.sha256WithRsa(str);
   }
   /**
@@ -90,7 +91,7 @@ class Pay {
    * @param privatekey 私钥key  key.pem   fs.readFileSync(keyPath)
    */
   public sha256WithRsa(data: string): string {
-    if (!this.privateKey) throw '缺少秘钥文件';
+    if (!this.privateKey) throw new Error('缺少秘钥文件');
     return crypto.createSign('RSA-SHA256').update(data).sign(this.privateKey, 'base64');
   }
   /**
@@ -119,15 +120,57 @@ class Pay {
     return this.authType.concat(' ').concat(_authorization);
   }
   /**
+   * 参数初始化
+   */
+  private init(method: string, url: string, params?: object) {
+    const nonce_str = Math.random().toString(36).substr(2, 15),
+      timestamp = parseInt(+new Date() / 1000 + '').toString();
+
+    const signature = this.getSignature(
+      method,
+      nonce_str,
+      timestamp,
+      url.replace('https://api.mch.weixin.qq.com', ''),
+      params
+    );
+    const authorization = this.getAuthorization(nonce_str, timestamp, signature);
+    return authorization;
+  }
+  /**
    * post 请求
    * @param url  请求接口
    * @param params 请求参数
    */
-  public async postRequest(url: string, params: object, authorization: string) {
+  private async postRequest(url: string, params: object, authorization: string): Promise<object> {
     try {
       const result = await request.post(url).send(params).set({
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        'User-Agent':
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36',
+        Authorization: authorization,
+      });
+      return {
+        status: result.status,
+        ...result.body,
+      };
+    } catch (error) {
+      const err = JSON.parse(JSON.stringify(error));
+      return {
+        status: error.status,
+        ...(err.response.text && JSON.parse(err.response.text)),
+      };
+    }
+  }
+  /**
+   * get 请求
+   * @param url  请求接口
+   * @param params 请求参数
+   */
+  private async getRequest(url: string, authorization: string): Promise<object> {
+    try {
+      const result = await request.get(url).set({
+        Accept: 'application/json',
         'User-Agent':
           'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36',
         Authorization: authorization,
@@ -149,28 +192,35 @@ class Pay {
    * h5支付
    * @param params 请求参数 object 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_3_1.shtml
    */
-  public async transactions_h5(params: Ih5) {
+  public async transactions_h5(params: Ih5): Promise<object> {
     // 请求参数
     const _params = {
       appid: this.appid,
       mchid: this.mchid,
       ...params,
     };
+    const url = 'https://api.mch.weixin.qq.com/v3/pay/transactions/h5';
 
-    const nonce_str = Math.random().toString(36).substr(2, 15),
-      timestamp = parseInt(+new Date() / 1000 + '').toString(),
-      url = 'https://api.mch.weixin.qq.com/v3/pay/transactions/h5';
-
-    const signature = this.getSignature(
-      'POST',
-      nonce_str,
-      timestamp,
-      url.replace('https://api.mch.weixin.qq.com', ''),
-      _params
-    );
-    const authorization = this.getAuthorization(nonce_str, timestamp, signature);
+    const authorization = this.init('POST', url, _params);
 
     return await this.postRequest(url, _params, authorization);
+  }
+  /**
+   * 查询订单
+   * @param params 请求参数 object 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_3_2.shtml
+   */
+  public async query(params: query1 | query2): Promise<object> {
+    let url = '';
+    if (params.transaction_id) {
+      url = `https://api.mch.weixin.qq.com/v3/pay/transactions/id/${params.transaction_id}?mchid=${this.mchid}`;
+    } else if (params.out_trade_no) {
+      url = `https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/${params.out_trade_no}?mchid=${this.mchid}`;
+    } else {
+      throw new Error('缺少transaction_id或者out_trade_no');
+    }
+
+    const authorization = this.init('GET', url);
+    return await this.getRequest(url, authorization);
   }
 }
 

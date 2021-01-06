@@ -87,6 +87,6 @@ try {
 [v3支付文档](https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml)
 
 ## 其他推荐
-[v2支付npm包](https://www.npmjs.com/package/node-wxpay3)
+[微信v2支付npm包](https://www.npmjs.com/package/node-wxpay3)
 [支付宝npm包](https://www.npmjs.com/package/node-alipay1)
 [快递鸟npm包](https://www.npmjs.com/package/node-kdniao)
