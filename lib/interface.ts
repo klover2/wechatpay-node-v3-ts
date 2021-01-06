@@ -60,11 +60,22 @@ export interface Ih5 {
   detail?: Idetail;
   scene_info: IsceneInfoH5;
 }
-export interface query1 {
+export interface Iquery1 {
   transaction_id: string;
   out_trade_no?: string;
 }
-export interface query2 {
+export interface Iquery2 {
   transaction_id?: string;
   out_trade_no: string;
+}
+export interface Itradebill {
+  bill_date: string;
+  sub_mchid?: string;
+  bill_type: string;
+  tar_type?: string;
+}
+export interface Ifundflowbill {
+  bill_date: string;
+  account_type: string;
+  tar_type?: string;
 }

@@ -2,7 +2,7 @@
 import crypto from 'crypto';
 import request from 'superagent';
 
-import {Ipay, Ih5, query1, query2} from './lib/interface';
+import {Ipay, Ih5, Iquery1, Iquery2, Itradebill, Ifundflowbill} from './lib/interface';
 
 class Pay {
   private appid: string; //  直连商户申请的公众号或移动应用appid。
@@ -175,10 +175,34 @@ class Pay {
           'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36',
         Authorization: authorization,
       });
-      return {
-        status: result.status,
-        ...result.body,
-      };
+
+      let data = {};
+      switch (result.type) {
+        case 'application/json':
+          data = {
+            status: result.status,
+            ...result.body,
+          };
+          break;
+        case 'text/plain':
+          data = {
+            status: result.status,
+            data: result.text,
+          };
+          break;
+        case 'application/x-gzip':
+          data = {
+            status: result.status,
+            data: result.body,
+          };
+          break;
+        default:
+          data = {
+            status: result.status,
+            ...result.body,
+          };
+      }
+      return data;
     } catch (error) {
       const err = JSON.parse(JSON.stringify(error));
       return {
@@ -209,7 +233,7 @@ class Pay {
    * 查询订单
    * @param params 请求参数 object 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_3_2.shtml
    */
-  public async query(params: query1 | query2): Promise<object> {
+  public async query(params: Iquery1 | Iquery2): Promise<object> {
     let url = '';
     if (params.transaction_id) {
       url = `https://api.mch.weixin.qq.com/v3/pay/transactions/id/${params.transaction_id}?mchid=${this.mchid}`;
@@ -221,6 +245,74 @@ class Pay {
 
     const authorization = this.init('GET', url);
     return await this.getRequest(url, authorization);
+  }
+  /**
+   * 关闭订单
+   * @param out_trade_no 请求参数 商户订单号 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_3_3.shtml
+   */
+  public async close(out_trade_no: string): Promise<object> {
+    if (!out_trade_no) throw new Error('缺少out_trade_no');
+
+    // 请求参数
+    const _params = {
+      mchid: this.mchid,
+    };
+    const url = `https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/${out_trade_no}/close`;
+    const authorization = this.init('POST', url, _params);
+
+    return await this.postRequest(url, _params, authorization);
+  }
+  /**
+   * 申请交易账单
+   * @param params 请求参数 object 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_6.shtml
+   */
+  public async tradebill(params: Itradebill): Promise<object> {
+    let url = 'https://api.mch.weixin.qq.com/v3/bill/tradebill';
+    const _params: any = {
+      ...params,
+    };
+    const querystring = Object.keys(_params)
+      .filter(function (key) {
+        return !!_params[key];
+      })
+      .sort()
+      .map(function (key) {
+        return key + '=' + _params[key]; // 中文需要转码
+      })
+      .join('&');
+    url = url + `?${querystring}`;
+    const authorization = this.init('GET', url);
+    return await this.getRequest(url, authorization);
+  }
+  /**
+   * 申请资金账单
+   * @param params 请求参数 object 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_7.shtml
+   */
+  public async fundflowbill(params: Ifundflowbill): Promise<object> {
+    let url = 'https://api.mch.weixin.qq.com/v3/bill/fundflowbill';
+    const _params: any = {
+      ...params,
+    };
+    const querystring = Object.keys(_params)
+      .filter(function (key) {
+        return !!_params[key];
+      })
+      .sort()
+      .map(function (key) {
+        return key + '=' + _params[key]; // 中文需要转码
+      })
+      .join('&');
+    url = url + `?${querystring}`;
+    const authorization = this.init('GET', url);
+    return await this.getRequest(url, authorization);
+  }
+  /**
+   * 下载账单
+   * @param download_url 请求参数 路径 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_8.shtml
+   */
+  public async downloadbill(download_url: string) {
+    const authorization = this.init('GET', download_url);
+    return await this.getRequest(download_url, authorization);
   }
 }
 
