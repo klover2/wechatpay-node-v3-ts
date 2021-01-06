@@ -77,6 +77,20 @@ try {
 1. serial_no是证书序列号 请在命令窗口使用 `openssl x509 -in apiclient_cert.pem -noout -serial` 获取
 2. 头部参数需要添加 User-Agent 参数
 
+## ^1.0.0使用介绍
+暂时只更新了微信文档使用新模式的接口（其他新接口由于暂时用不上就没有写）。至于支付回调没有写是因为支付成功了，接收不到回调通知，和微信客服交流没有回答我。（以后测试成功会更新出来）
+| api名称 | 函数名 |
+|--|--|
+| [h5支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_3_1.shtml) |[transactions_h5](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)  |
+| [native支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_4_1.shtml) |[transactions_native](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_native.md)  |
+| [app支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_1.shtml) |[transactions_app](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_app.md)  |
+| [JSAPI支付 或者 小程序支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_1.shtml) |[transactions_jsapi](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_jsapi.md)  |
+| [查询订单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_1.shtml) |[query](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/query.md)  |
+| [关闭订单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_1.shtml) |[close](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/close.md)  |
+| [申请交易账单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_6.shtml) |[tradebill](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/tradebill.md)  |
+| [申请资金账单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_7.shtml) |[fundflowbill](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/fundflowbill.md)  |
+| [下载账单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_8.shtml) |[downloadbill](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/downloadbill.md)  |
+
 ## 版本介绍
 | 版本介绍 |版本号  |
 |--|--|
