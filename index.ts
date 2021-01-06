@@ -147,7 +147,7 @@ class Pay {
   // ---------------支付相关接口--------------//
   /**
    * h5支付
-   * @param params 请求参数 object
+   * @param params 请求参数 object 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_3_1.shtml
    */
   public async transactions_h5(params: Ih5) {
     // 请求参数

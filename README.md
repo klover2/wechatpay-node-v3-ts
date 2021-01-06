@@ -77,7 +77,16 @@ try {
 1. serial_no是证书序列号 请在命令窗口使用 `openssl x509 -in apiclient_cert.pem -noout -serial` 获取
 2. 头部参数需要添加 User-Agent 参数
 
+## 版本介绍
+| 版本介绍 |版本号  |
+|--|--|
+| v0.0.1 | 仅支持签名和获取头部参数Authorization |
+
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)
 [v3支付文档](https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml)
+
+## 其他推荐
 [v2支付npm包](https://www.npmjs.com/package/node-wxpay3)
+[支付宝npm包](https://www.npmjs.com/package/node-alipay1)
+[快递鸟npm包](https://www.npmjs.com/package/node-kdniao)
