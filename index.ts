@@ -12,6 +12,7 @@ import {
   Itradebill,
   Ifundflowbill,
   Iapp,
+  Ioptions,
 } from './lib/interface';
 
 class Pay {
@@ -21,6 +22,8 @@ class Pay {
   private publicKey?: Buffer; // 公钥
   private privateKey?: Buffer; // 密钥
   private authType = 'WECHATPAY2-SHA256-RSA2048'; // 认证类型，目前为WECHATPAY2-SHA256-RSA2048
+  private userAgent = '127.0.0.1'; // User-Agent
+  private key?: string; // APIv3密钥
   /**
    * 构造器
    * @param appid 直连商户申请的公众号或移动应用appid。
@@ -36,7 +39,7 @@ class Pay {
     serial_no: string,
     publicKey: Buffer,
     privateKey: Buffer,
-    authType?: string
+    optipns?: Ioptions
   );
   /**
    * 构造器
@@ -56,7 +59,7 @@ class Pay {
     serial_no?: string,
     publicKey?: Buffer,
     privateKey?: Buffer,
-    authType?: string
+    optipns?: Ioptions
   ) {
     if (arg1 instanceof Object) {
       this.appid = arg1.appid;
@@ -64,14 +67,21 @@ class Pay {
       this.serial_no = arg1.serial_no;
       this.publicKey = arg1.publicKey;
       this.privateKey = arg1.privateKey;
+
       this.authType = arg1.authType || 'WECHATPAY2-SHA256-RSA2048';
+      this.userAgent = arg1.userAgent || '127.0.0.1';
+      this.key = arg1.key;
     } else {
+      const _optipns = optipns || {};
       this.appid = arg1;
       this.mchid = mchid || '';
       this.serial_no = serial_no || '';
       this.publicKey = publicKey;
       this.privateKey = privateKey;
-      this.authType = authType || 'WECHATPAY2-SHA256-RSA2048';
+
+      this.authType = _optipns.authType || 'WECHATPAY2-SHA256-RSA2048';
+      this.userAgent = _optipns.userAgent || '127.0.0.1';
+      this.key = _optipns.key;
     }
   }
   /**
@@ -145,6 +155,29 @@ class Pay {
     return this.authType.concat(' ').concat(_authorization);
   }
   /**
+   * 回调解密
+   * @param ciphertext  Base64编码后的开启/停用结果数据密文
+   * @param associated_data 附加数据
+   * @param nonce 加密使用的随机串
+   * @param key  APIv3密钥
+   */
+  public decipher_gcm(ciphertext: string, associated_data: string, nonce: string, key?: string) {
+    if (key) this.key = key;
+    if (!this.key) throw new Error('缺少key');
+
+    const _ciphertext = Buffer.from(ciphertext, 'base64');
+
+    // 解密 ciphertext字符  AEAD_AES_256_GCM算法
+    const authTag: any = _ciphertext.slice(_ciphertext.length - 16);
+    const data = _ciphertext.slice(0, _ciphertext.length - 16);
+    const decipher = crypto.createDecipheriv('aes-256-gcm', this.key, nonce);
+    decipher.setAuthTag(authTag);
+    decipher.setAAD(Buffer.from(associated_data));
+    const decoded = decipher.update(data, undefined, 'utf8');
+    decipher.final();
+    return JSON.parse(decoded);
+  }
+  /**
    * 参数初始化
    */
   private init(method: string, url: string, params?: object) {
@@ -171,7 +204,7 @@ class Pay {
       const result = await request.post(url).send(params).set({
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'User-Agent': '127.0.0.1',
+        'User-Agent': this.userAgent,
         Authorization: authorization,
       });
       return {
@@ -195,7 +228,7 @@ class Pay {
     try {
       const result = await request.get(url).set({
         Accept: 'application/json',
-        'User-Agent': '127.0.0.1',
+        'User-Agent': this.userAgent,
         Authorization: authorization,
       });
 

@@ -52,7 +52,7 @@ try {
       url = '/v3/pay/transactions/h5';
 
     # 获取签名
-    const signature = pay.getSignature('POST', nonce_str, timestamp, url, params);
+    const signature = pay.getSignature('POST', nonce_str, timestamp, url, params); # 如果是get 请求 则不需要params 参数拼接在url上 例如 /v3/pay/transactions/id/12177525012014?mchid=1230000109
     # 获取头部authorization 参数
     const authorization = pay.getAuthorization(nonce_str, timestamp, signature);
 
@@ -72,6 +72,21 @@ try {
     console.log(error);
   }
 ```
+
+## WxPay 介绍
+`import WxPay from 'wechatpay-node-v3';` 或者 `const WxPay = require('wechatpay-node-v3')`
+
+参数介绍
+|参数名称  |参数介绍  |是否必须|
+|--|--|--|
+|  appid|   直连商户申请的公众号或移动应用appid|是|
+|mchid|商户号|是
+|serial_no|证书序列号|是|
+|publicKey|公钥|是|
+|privateKey|密钥|是|
+|authType|认证类型，目前为WECHATPAY2-SHA256-RSA2048|否|
+|userAgent|自定义User-Agent|否|
+|key|APIv3密钥|否 有验证回调必须|
 
 ## 注意
 1. serial_no是证书序列号 请在命令窗口使用 `openssl x509 -in apiclient_cert.pem -noout -serial` 获取
