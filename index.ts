@@ -14,6 +14,7 @@ import {
   Iapp,
   Ioptions,
 } from './lib/interface';
+import {IcombineH5} from './lib/combine_interface';
 
 class Pay {
   private appid: string; //  直连商户申请的公众号或移动应用appid。
@@ -31,7 +32,11 @@ class Pay {
    * @param serial_no  证书序列号
    * @param publicKey 公钥
    * @param privateKey 密钥
-   * @param authType 认证类型，目前为WECHATPAY2-SHA256-RSA2048
+   * @param optipns 可选参数 object 包括下面参数
+   *
+   * @param authType 可选参数 认证类型，目前为WECHATPAY2-SHA256-RSA2048
+   * @param userAgent 可选参数 User-Agent
+   * @param key 可选参数 APIv3密钥
    */
   public constructor(
     appid: string,
@@ -50,7 +55,9 @@ class Pay {
    * @param serial_no  证书序列号
    * @param publicKey 公钥
    * @param privateKey 密钥
-   * @param authType 认证类型，目前为WECHATPAY2-SHA256-RSA2048
+   * @param authType 可选参数 认证类型，目前为WECHATPAY2-SHA256-RSA2048
+   * @param userAgent 可选参数 User-Agent
+   * @param key 可选参数 APIv3密钥
    */
   public constructor(obj: Ipay);
   constructor(
@@ -161,7 +168,12 @@ class Pay {
    * @param nonce 加密使用的随机串
    * @param key  APIv3密钥
    */
-  public decipher_gcm(ciphertext: string, associated_data: string, nonce: string, key?: string) {
+  public decipher_gcm(
+    ciphertext: string,
+    associated_data: string,
+    nonce: string,
+    key?: string
+  ): object {
     if (key) this.key = key;
     if (!this.key) throw new Error('缺少key');
 
@@ -280,6 +292,23 @@ class Pay {
       ...params,
     };
     const url = 'https://api.mch.weixin.qq.com/v3/pay/transactions/h5';
+
+    const authorization = this.init('POST', url, _params);
+
+    return await this.postRequest(url, _params, authorization);
+  }
+  /**
+   * 合单h5支付
+   * @param params 请求参数 object 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_2.shtml
+   */
+  public async combine_transactions_h5(params: IcombineH5): Promise<object> {
+    // 请求参数
+    const _params = {
+      combine_appid: this.appid,
+      combine_mchid: this.mchid,
+      ...params,
+    };
+    const url = 'https://api.mch.weixin.qq.com/v3/combine-transactions/h5';
 
     const authorization = this.init('POST', url, _params);
 
