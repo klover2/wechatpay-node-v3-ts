@@ -171,8 +171,7 @@ class Pay {
       const result = await request.post(url).send(params).set({
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'User-Agent':
-          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36',
+        'User-Agent': '127.0.0.1',
         Authorization: authorization,
       });
       return {
@@ -196,8 +195,7 @@ class Pay {
     try {
       const result = await request.get(url).set({
         Accept: 'application/json',
-        'User-Agent':
-          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36',
+        'User-Agent': '127.0.0.1',
         Authorization: authorization,
       });
 
