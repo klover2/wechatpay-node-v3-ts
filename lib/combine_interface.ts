@@ -6,6 +6,10 @@ interface Ih5Info {
   bundle_id?: string;
   package_name?: string;
 }
+interface IsceneInfoNative {
+  device_id?: string;
+  payer_client_ip: string;
+}
 interface IsceneInfoH5 {
   payer_client_ip: string;
   device_id: string;
@@ -28,6 +32,9 @@ interface IsubOrders {
   description: string;
   settle_info?: IsettleInfo;
 }
+interface IcombinePayerInfo {
+  openid: string;
+}
 
 // 抛出
 export interface IcombineH5 {
@@ -37,4 +44,35 @@ export interface IcombineH5 {
   time_expire?: string;
   notify_url: string;
   sub_orders: IsubOrders[];
+}
+export interface IcombineNative {
+  combine_out_trade_no: string;
+  scene_info: IsceneInfoNative;
+  time_start?: string;
+  time_expire?: string;
+  notify_url: string;
+  sub_orders: IsubOrders[];
+}
+export interface IcombineApp {
+  combine_out_trade_no: string;
+  scene_info: IsceneInfoNative;
+  time_start?: string;
+  time_expire?: string;
+  notify_url: string;
+  sub_orders: IsubOrders[];
+  combine_payer_info?: IcombinePayerInfo;
+}
+export interface IcombineJsapi {
+  combine_out_trade_no: string;
+  scene_info: IsceneInfoNative;
+  time_start?: string;
+  time_expire?: string;
+  notify_url: string;
+  sub_orders: IsubOrders[];
+  combine_payer_info: IcombinePayerInfo;
+}
+export interface IcloseSubOrders {
+  mchid: string;
+  out_trade_no: string;
+  sub_mchid?: string;
 }

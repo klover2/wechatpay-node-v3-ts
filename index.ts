@@ -14,7 +14,13 @@ import {
   Iapp,
   Ioptions,
 } from './lib/interface';
-import {IcombineH5} from './lib/combine_interface';
+import {
+  IcombineH5,
+  IcombineNative,
+  IcombineApp,
+  IcombineJsapi,
+  IcloseSubOrders,
+} from './lib/combine_interface';
 
 class Pay {
   private appid: string; //  直连商户申请的公众号或移动应用appid。
@@ -332,6 +338,23 @@ class Pay {
     return await this.postRequest(url, _params, authorization);
   }
   /**
+   * 合单native支付
+   * @param params 请求参数 object 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_5.shtml
+   */
+  public async combine_transactions_native(params: IcombineNative): Promise<object> {
+    // 请求参数
+    const _params = {
+      combine_appid: this.appid,
+      combine_mchid: this.mchid,
+      ...params,
+    };
+    const url = 'https://api.mch.weixin.qq.com/v3/combine-transactions/native';
+
+    const authorization = this.init('POST', url, _params);
+
+    return await this.postRequest(url, _params, authorization);
+  }
+  /**
    * app支付
    * @param params 请求参数 object 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_1.shtml
    */
@@ -343,6 +366,38 @@ class Pay {
       ...params,
     };
     const url = 'https://api.mch.weixin.qq.com/v3/pay/transactions/app';
+
+    const authorization = this.init('POST', url, _params);
+
+    const result: any = await this.postRequest(url, _params, authorization);
+    if (result.status === 200 && result.prepay_id) {
+      const data = {
+        status: result.status,
+        appid: this.appid,
+        partnerid: this.mchid,
+        package: 'Sign=WXPay',
+        timestamp: parseInt(+new Date() / 1000 + '').toString(),
+        noncestr: Math.random().toString(36).substr(2, 15),
+        prepayid: result.prepay_id,
+        paySign: '',
+      };
+      data.paySign = this.sign(data);
+      return data;
+    }
+    return result;
+  }
+  /**
+   * 合单app支付
+   * @param params 请求参数 object 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_1.shtml
+   */
+  public async combine_transactions_app(params: IcombineApp): Promise<object> {
+    // 请求参数
+    const _params = {
+      combine_appid: this.appid,
+      combine_mchid: this.mchid,
+      ...params,
+    };
+    const url = 'https://api.mch.weixin.qq.com/v3/combine-transactions/app';
 
     const authorization = this.init('POST', url, _params);
 
@@ -395,6 +450,37 @@ class Pay {
     return result;
   }
   /**
+   * 合单JSAPI支付 或者 小程序支付
+   * @param params 请求参数 object 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_3.shtml
+   */
+  public async combine_transactions_jsapi(params: IcombineJsapi): Promise<object> {
+    // 请求参数
+    const _params = {
+      combine_appid: this.appid,
+      combine_mchid: this.mchid,
+      ...params,
+    };
+    const url = 'https://api.mch.weixin.qq.com/v3/combine-transactions/jsapi';
+
+    const authorization = this.init('POST', url, _params);
+
+    const result: any = await this.postRequest(url, _params, authorization);
+    if (result.status === 200 && result.prepay_id) {
+      const data = {
+        status: result.status,
+        appId: this.appid,
+        timeStamp: parseInt(+new Date() / 1000 + '').toString(),
+        nonceStr: Math.random().toString(36).substr(2, 15),
+        package: `prepay_id=${result.prepay_id}`,
+        signType: 'RSA',
+        paySign: '',
+      };
+      data.paySign = this.sign(data);
+      return data;
+    }
+    return result;
+  }
+  /**
    * 查询订单
    * @param params 请求参数 object 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_3_2.shtml
    */
@@ -412,6 +498,17 @@ class Pay {
     return await this.getRequest(url, authorization);
   }
   /**
+   * 合单查询订单
+   * @param params 请求参数 object 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_11.shtml
+   */
+  public async combine_query(combine_out_trade_no: string): Promise<object> {
+    if (!combine_out_trade_no) throw new Error('缺少combine_out_trade_no');
+    const url = `https://api.mch.weixin.qq.com/v3/combine-transactions/out-trade-no/${combine_out_trade_no}`;
+
+    const authorization = this.init('GET', url);
+    return await this.getRequest(url, authorization);
+  }
+  /**
    * 关闭订单
    * @param out_trade_no 请求参数 商户订单号 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_3_3.shtml
    */
@@ -423,6 +520,27 @@ class Pay {
       mchid: this.mchid,
     };
     const url = `https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/${out_trade_no}/close`;
+    const authorization = this.init('POST', url, _params);
+
+    return await this.postRequest(url, _params, authorization);
+  }
+  /**
+   * 合单关闭订单
+   * @param combine_out_trade_no 请求参数 总订单号 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_12.shtml
+   * @param sub_orders array 子单信息
+   */
+  public async combine_close(
+    combine_out_trade_no: string,
+    sub_orders: IcloseSubOrders[]
+  ): Promise<object> {
+    if (!combine_out_trade_no) throw new Error('缺少out_trade_no');
+
+    // 请求参数
+    const _params = {
+      combine_appid: this.appid,
+      sub_orders,
+    };
+    const url = `https://api.mch.weixin.qq.com/v3/combine-transactions/out-trade-no/${combine_out_trade_no}/close`;
     const authorization = this.init('POST', url, _params);
 
     return await this.postRequest(url, _params, authorization);
