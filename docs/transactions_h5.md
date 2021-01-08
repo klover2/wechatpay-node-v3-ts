@@ -39,3 +39,9 @@ const params = {
   # h5_url: 'https://wx.tenpay.com/cgi-bin/mmpayweb-bin/checkmweb?prepay_id=wx051840206120147833cf4bcfcef12b0000&package=2056162962'
   # }
 ```
+
+## 回调解密
+```bash
+# key 用商户平台上设置的APIv3密钥【微信商户平台—>账户设置—>API安全—>设置APIv3密钥】，记为key；
+const result = pay.decipher_gcm(ciphertext, associated_data, nonce, key);
+```

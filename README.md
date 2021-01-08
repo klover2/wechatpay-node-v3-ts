@@ -106,12 +106,22 @@ try {
 | [申请交易账单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_6.shtml) |[tradebill](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/tradebill.md)  |
 | [申请资金账单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_7.shtml) |[fundflowbill](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/fundflowbill.md)  |
 | [下载账单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_8.shtml) |[downloadbill](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/downloadbill.md)  |
+| [回调解密](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_5.shtml) |[decipher_gcm](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md))  |
+|[合单h5支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_2.shtml)|[combine_transactions_h5](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
+|[合单native支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_5.shtml)|[combine_transactions_native](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
+|[合单app支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_1.shtml)|[combine_transactions_app](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
+|[合单JSAPI支付 或者 小程序支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_3.shtml)|[combine_transactions_jsapi](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
+|[查询合单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_11.shtml)|[combine_query](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
+|[关闭合单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_12.shtml)|[combine_close](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
+
+
 
 ## 版本介绍
 | 版本介绍 |版本号  |
 |--|--|
 | v0.0.1 | 仅支持签名和获取头部参数Authorization |
 |v1.0.0|增加了支付(不包括合单支付)、查询订单、关闭订单、申请交易账单、申请资金账单、下载账单|
+|v1.1.0|增加了回调解密，合单支付、合单关闭、合单查询|
 
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)
@@ -121,3 +131,4 @@ try {
 [微信v2支付npm包](https://www.npmjs.com/package/node-wxpay3)
 [支付宝npm包](https://www.npmjs.com/package/node-alipay1)
 [快递鸟npm包](https://www.npmjs.com/package/node-kdniao)
+[微信支付v3文档图片上传](https://blog.csdn.net/weixin_43110609/article/details/112318118)
