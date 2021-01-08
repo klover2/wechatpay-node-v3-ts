@@ -1,4 +1,4 @@
-# 微信支付 v3
+# 微信支付v3 支持在ts和js中使用
 
 ## 前言
 微信官方在2020-12-25正式开放了[v3](https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml)版本的接口,相比较旧版本[v2](https://pay.weixin.qq.com/wiki/doc/api/index.html)有了不少改变,例如：
@@ -129,6 +129,9 @@ try {
 
 ## 其他推荐
 [微信v2支付npm包](https://www.npmjs.com/package/node-wxpay3)
+
 [支付宝npm包](https://www.npmjs.com/package/node-alipay1)
+
 [快递鸟npm包](https://www.npmjs.com/package/node-kdniao)
+
 [微信支付v3文档图片上传](https://blog.csdn.net/weixin_43110609/article/details/112318118)
