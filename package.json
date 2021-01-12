@@ -1,6 +1,6 @@
 {
   "name": "wechatpay-node-v3",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "微信支付文档v3",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -1,3 +1,4 @@
+
 # 微信支付v3 支持在ts和js中使用
 
 ## 前言
@@ -8,13 +9,13 @@
 * 不再要求HTTPS客户端证书
 * 使用AES-256-GCM，对回调中的关键信息进行加密保护
 
-由于官方文档只支持java和php,所以我在这里使用ts简单的封装了一个版本（参数处理和参数加密),支持在js或者ts中使用,后续会更加完善这个npm包，谢谢。
+由于官方文档只支持java和php,所以我在这里使用ts简单的封装了一个版本,支持在js或者ts中使用,后续会更加完善这个npm包，谢谢。
 
 ## 使用
 `yarn add wechatpay-node-v3`(也可以用npm)
 
 ```bash
-import WxPay from 'wechatpay-node-v3';
+import WxPay from 'wechatpay-node-v3'; // 支持使用require
 import fs from 'fs';
 import request from 'superagent';
 
@@ -106,7 +107,7 @@ try {
 | [申请交易账单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_6.shtml) |[tradebill](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/tradebill.md)  |
 | [申请资金账单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_7.shtml) |[fundflowbill](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/fundflowbill.md)  |
 | [下载账单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_8.shtml) |[downloadbill](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/downloadbill.md)  |
-| [回调解密](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_5.shtml) |[decipher_gcm](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md))  |
+| [回调解密](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_5.shtml) |[decipher_gcm](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)  |
 |[合单h5支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_2.shtml)|[combine_transactions_h5](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
 |[合单native支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_5.shtml)|[combine_transactions_native](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
 |[合单app支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_1.shtml)|[combine_transactions_app](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
