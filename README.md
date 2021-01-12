@@ -95,7 +95,7 @@ try {
 3. 需要在商户平台设置APIv3密钥才会有回调，详情参看文档指引http://kf.qq.com/faq/180830E36vyQ180830AZFZvu.html
 
 ## ^1.0.0使用介绍
-暂时只更新了微信文档使用新模式的接口（其他新接口由于暂时用不上就没有写）。至于支付回调没有写是因为支付成功了，接收不到回调通知，和微信客服交流没有回答我。（以后测试成功会更新出来）
+以下函数是我针对微信相关接口进行进一步封装，可以直接使用。
 | api名称 | 函数名 |
 |--|--|
 | [h5支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_3_1.shtml) |[transactions_h5](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)  |
@@ -122,7 +122,7 @@ try {
 |--|--|
 | v0.0.1 | 仅支持签名和获取头部参数Authorization |
 |v1.0.0|增加了支付(不包括合单支付)、查询订单、关闭订单、申请交易账单、申请资金账单、下载账单|
-|v1.1.0|增加了回调解密，合单支付、合单关闭、合单查询|
+|v1.2.0|增加了回调解密，合单支付、合单关闭、合单查询|
 
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)
