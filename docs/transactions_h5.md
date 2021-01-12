@@ -44,4 +44,19 @@ const params = {
 ```bash
 # key 用商户平台上设置的APIv3密钥【微信商户平台—>账户设置—>API安全—>设置APIv3密钥】，记为key；
 const result = pay.decipher_gcm(ciphertext, associated_data, nonce, key);
+# 返回
+# {
+#   mchid: '商户号',
+#   appid: 'appid',
+#   out_trade_no: '1610419296553',
+#   transaction_id: '4200000848202101120290526543',
+#   trade_type: 'NATIVE',
+#   trade_state: 'SUCCESS',
+#   trade_state_desc: '支付成功',
+#   bank_type: 'OTHERS',
+#   attach: '',
+#   success_time: '2021-01-12T10:43:43+08:00',
+#   payer: { openid: '' },
+#   amount: { total: 1, payer_total: 1, currency: 'CNY', payer_currency: 'CNY' }
+# }
 ```
