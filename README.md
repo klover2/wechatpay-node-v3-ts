@@ -123,6 +123,7 @@ try {
 | v0.0.1 | 仅支持签名和获取头部参数Authorization |
 |v1.0.0|增加了支付(不包括合单支付)、查询订单、关闭订单、申请交易账单、申请资金账单、下载账单|
 |v1.2.0|增加了回调解密，合单支付、合单关闭、合单查询|
+|v1.2.1|修改app、jsapi、native支付字段scene_info 改为可选|
 
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)

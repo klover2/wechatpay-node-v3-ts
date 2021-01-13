@@ -85,7 +85,7 @@ export interface Inative {
   goods_tag?: string;
   amount: Iamount;
   detail?: Idetail;
-  scene_info: IsceneInfoNative;
+  scene_info?: IsceneInfoNative;
 }
 export interface Ijsapi {
   description: string;
@@ -97,7 +97,7 @@ export interface Ijsapi {
   amount: Iamount;
   payer: Ipayer;
   detail?: Idetail;
-  scene_info: IsceneInfoNative;
+  scene_info?: IsceneInfoNative;
 }
 export interface Iapp {
   description: string;
@@ -108,7 +108,7 @@ export interface Iapp {
   goods_tag?: string;
   amount: Iamount;
   detail?: Idetail;
-  scene_info: IsceneInfoNative;
+  scene_info?: IsceneInfoNative;
 }
 export interface Iquery1 {
   transaction_id: string;
