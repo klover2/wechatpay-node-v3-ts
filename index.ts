@@ -123,14 +123,9 @@ class Pay {
   // 时间戳
   // 随机字符串
   // 预支付交易会话ID
+  // 官网文档: https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_5_4.shtml
   private sign(params: any) {
-    let str = '';
-    const exclude = ['signType', 'paySign', 'status', 'package', 'partnerid'];
-    for (const key in params) {
-      if (!exclude.includes(key)) {
-        str = str + params[key] + '\n';
-      }
-    }
+    const str = [params.appId, params.timeStamp, params.nonceStr, params.package, ''].join('\n')
     return this.sha256WithRsa(str);
   }
   /**
