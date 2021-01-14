@@ -125,7 +125,7 @@ class Pay {
   // 预支付交易会话ID
   private sign(params: any) {
     let str = '';
-    const exclude = ['signType', 'paySign', 'status', 'package', 'partnerid'];
+    const exclude = ['signType', 'paySign', 'status', 'partnerid'];
     for (const key in params) {
       if (!exclude.includes(key)) {
         str = str + params[key] + '\n';
