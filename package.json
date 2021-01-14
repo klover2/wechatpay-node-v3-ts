@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/klover2/wechatpay-node-v3-ts#readme",
   "devDependencies": {
-    "@types/node": "^14.14.12",
+    "@types/node": "^14.14.20",
     "@types/superagent": "^4.1.10",
     "@typescript-eslint/eslint-plugin": "^4.9.1",
     "@typescript-eslint/parser": "^4.9.1",
