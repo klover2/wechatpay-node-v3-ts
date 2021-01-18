@@ -1,6 +1,6 @@
 {
   "name": "wechatpay-node-v3",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "微信支付文档v3",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,6 +10,7 @@
     "release": "npm publish"
   },
   "dependencies": {
+    "@fidm/x509": "^1.2.1",
     "superagent": "^6.1.0"
   },
   "repository": {

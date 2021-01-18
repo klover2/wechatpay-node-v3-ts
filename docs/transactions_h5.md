@@ -12,6 +12,15 @@ const pay = new WxPay({
   privateKey: fs.readFileSync('./apiclient_key.pem'), // 秘钥
 });
 ```
+
+## serial_no获取
+1. 请在命令窗口使用 `openssl x509 -in apiclient_cert.pem -noout -serial` 获取
+2. 调用方法`getSN()` // 不传入参数默认创建对象时的publicKey
+```bash
+console.log('获取序列号', pay.getSN()); 
+或者
+console.log('获取序列号', pay.getSN(fs.readFileSync('./apiclient_cert.pem'))); 
+```
 ## 使用
 ```bash
 const params = {

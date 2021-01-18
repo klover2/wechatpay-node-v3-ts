@@ -114,6 +114,7 @@ try {
 |[合单JSAPI支付 或者 小程序支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_3.shtml)|[combine_transactions_jsapi](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
 |[查询合单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_11.shtml)|[combine_query](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
 |[关闭合单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_12.shtml)|[combine_close](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
+|[获取序列号]()|[getSN](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)|
 
 
 

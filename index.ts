@@ -1,6 +1,7 @@
 'use strict';
 import crypto from 'crypto';
 import request from 'superagent';
+const x509_1 = require('@fidm/x509');
 
 import {
   Ipay,
@@ -132,6 +133,17 @@ class Pay {
       }
     }
     return this.sha256WithRsa(str);
+  }
+  // 获取序列号
+  public getSN(fileData?: string | Buffer): string {
+    if (!fileData && !this.publicKey) throw new Error('缺少公钥');
+    if (!fileData) fileData = this.publicKey;
+    if (typeof fileData == 'string') {
+      fileData = Buffer.from(fileData);
+    }
+
+    const certificate = x509_1.Certificate.fromPEM(fileData);
+    return certificate.serialNumber;
   }
   /**
    * SHA256withRSA
