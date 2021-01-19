@@ -578,7 +578,7 @@ class Pay {
       })
       .sort()
       .map(function (key) {
-        return key + '=' + _params[key]; // 中文需要转码
+        return key + '=' + _params[key];
       })
       .join('&');
     url = url + `?${querystring}`;
@@ -600,7 +600,7 @@ class Pay {
       })
       .sort()
       .map(function (key) {
-        return key + '=' + _params[key]; // 中文需要转码
+        return key + '=' + _params[key];
       })
       .join('&');
     url = url + `?${querystring}`;
