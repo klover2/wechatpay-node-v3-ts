@@ -22,7 +22,6 @@ import request from 'superagent';
 const pay = new WxPay({
   appid: '直连商户申请的公众号或移动应用appid',
   mchid: '商户号',
-  serial_no: '证书序列号',
   publicKey: fs.readFileSync('./apiclient_cert.pem'), // 公钥
   privateKey: fs.readFileSync('./apiclient_key.pem'), // 秘钥
 });
@@ -82,7 +81,7 @@ try {
 |--|--|--|
 |  appid|   直连商户申请的公众号或移动应用appid|是|
 |mchid|商户号|是
-|serial_no|证书序列号|是|
+|serial_no|证书序列号|否|
 |publicKey|公钥|是|
 |privateKey|密钥|是|
 |authType|认证类型，目前为WECHATPAY2-SHA256-RSA2048|否|
@@ -126,6 +125,7 @@ try {
 |v1.2.0|增加了回调解密，合单支付、合单关闭、合单查询|
 |v1.2.1|修改app、jsapi、native支付字段scene_info 改为可选|
 |v1.2.2|增加获取序列号方法|
+|v1.2.3|修改小程序支付签名错误和取消serial_no字段必填|
 
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)

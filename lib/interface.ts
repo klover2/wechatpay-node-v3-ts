@@ -54,11 +54,12 @@ export interface Ioptions {
   userAgent?: string;
   authType?: string;
   key?: string;
+  serial_no?: string;
 }
 export interface Ipay {
   appid: string; //  直连商户申请的公众号或移动应用appid。
   mchid: string; // 商户号
-  serial_no: string; // 证书序列号
+  serial_no?: string; // 证书序列号
   publicKey: Buffer; // 公钥
   privateKey: Buffer; // 密钥
   authType?: string; // 认证类型，目前为WECHATPAY2-SHA256-RSA2048

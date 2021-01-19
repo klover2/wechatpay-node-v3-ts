@@ -7,7 +7,6 @@ import request from 'superagent';
 const pay = new WxPay({
   appid: '直连商户申请的公众号或移动应用appid',
   mchid: '商户号',
-  serial_no: '证书序列号',
   publicKey: fs.readFileSync('./apiclient_cert.pem'), // 公钥
   privateKey: fs.readFileSync('./apiclient_key.pem'), // 秘钥
 });
@@ -36,6 +35,6 @@ const params = {
 #     package: 'Sign=WXPay',
 #     noncestr: 'm8dbyuytqul',
 #     timestamp: '1609919941',
-#     paySign: 'PLENslMbldtSbtj5mDpX0N78vMMSw7CFPEptSpm+6YktXDa5Qso6KJ/uRCbNCmvM7z5adLoEdTmzjB/mjr5Ow=='
+#     sign: 'PLENslMbldtSbtj5mDpX0N78vMMSw7CFPEptSpm+6YktXDa5Qso6KJ/uRCbNCmvM7z5adLoEdTmzjB/mjr5Ow=='
 #   }
 ```

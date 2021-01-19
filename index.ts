@@ -26,7 +26,7 @@ import {
 class Pay {
   private appid: string; //  直连商户申请的公众号或移动应用appid。
   private mchid: string; // 商户号
-  private serial_no: string; // 证书序列号
+  private serial_no = ''; // 证书序列号
   private publicKey?: Buffer; // 公钥
   private privateKey?: Buffer; // 密钥
   private authType = 'WECHATPAY2-SHA256-RSA2048'; // 认证类型，目前为WECHATPAY2-SHA256-RSA2048
@@ -36,11 +36,11 @@ class Pay {
    * 构造器
    * @param appid 直连商户申请的公众号或移动应用appid。
    * @param mchid 商户号
-   * @param serial_no  证书序列号
    * @param publicKey 公钥
    * @param privateKey 密钥
    * @param optipns 可选参数 object 包括下面参数
    *
+   * @param serial_no  证书序列号
    * @param authType 可选参数 认证类型，目前为WECHATPAY2-SHA256-RSA2048
    * @param userAgent 可选参数 User-Agent
    * @param key 可选参数 APIv3密钥
@@ -48,7 +48,6 @@ class Pay {
   public constructor(
     appid: string,
     mchid: string,
-    serial_no: string,
     publicKey: Buffer,
     privateKey: Buffer,
     optipns?: Ioptions
@@ -59,7 +58,7 @@ class Pay {
    *
    * @param appid 直连商户申请的公众号或移动应用appid。
    * @param mchid 商户号
-   * @param serial_no  证书序列号
+   * @param serial_no  可选参数 证书序列号
    * @param publicKey 公钥
    * @param privateKey 密钥
    * @param authType 可选参数 认证类型，目前为WECHATPAY2-SHA256-RSA2048
@@ -70,7 +69,6 @@ class Pay {
   constructor(
     arg1: Ipay | string,
     mchid?: string,
-    serial_no?: string,
     publicKey?: Buffer,
     privateKey?: Buffer,
     optipns?: Ioptions
@@ -78,9 +76,11 @@ class Pay {
     if (arg1 instanceof Object) {
       this.appid = arg1.appid;
       this.mchid = arg1.mchid;
-      this.serial_no = arg1.serial_no;
+      if (arg1.serial_no) this.serial_no = arg1.serial_no;
       this.publicKey = arg1.publicKey;
+      if (!this.publicKey) throw new Error('缺少公钥');
       this.privateKey = arg1.privateKey;
+      if (!arg1.serial_no) this.serial_no = this.getSN(this.publicKey);
 
       this.authType = arg1.authType || 'WECHATPAY2-SHA256-RSA2048';
       this.userAgent = arg1.userAgent || '127.0.0.1';
@@ -89,13 +89,15 @@ class Pay {
       const _optipns = optipns || {};
       this.appid = arg1;
       this.mchid = mchid || '';
-      this.serial_no = serial_no || '';
       this.publicKey = publicKey;
       this.privateKey = privateKey;
 
       this.authType = _optipns.authType || 'WECHATPAY2-SHA256-RSA2048';
       this.userAgent = _optipns.userAgent || '127.0.0.1';
       this.key = _optipns.key;
+      this.serial_no = _optipns.serial_no || '';
+      if (!this.publicKey) throw new Error('缺少公钥');
+      if (!this.serial_no) this.serial_no = this.getSN(this.publicKey);
     }
   }
   /**
@@ -124,14 +126,14 @@ class Pay {
   // 时间戳
   // 随机字符串
   // 预支付交易会话ID
-  private sign(params: any) {
-    let str = '';
-    const exclude = ['signType', 'paySign', 'status', 'package', 'partnerid'];
-    for (const key in params) {
-      if (!exclude.includes(key)) {
-        str = str + params[key] + '\n';
-      }
-    }
+  private sign(str: string) {
+    // let str = '';
+    // const exclude = ['signType', 'paySign', 'status', 'package', 'partnerid'];
+    // for (const key in params) {
+    //   if (!exclude.includes(key)) {
+    //     str = str + params[key] + '\n';
+    //   }
+    // }
     return this.sha256WithRsa(str);
   }
   // 获取序列号
@@ -391,9 +393,10 @@ class Pay {
         timestamp: parseInt(+new Date() / 1000 + '').toString(),
         noncestr: Math.random().toString(36).substr(2, 15),
         prepayid: result.prepay_id,
-        paySign: '',
+        sign: '',
       };
-      data.paySign = this.sign(data);
+      const str = [data.appid, data.timestamp, data.noncestr, data.package, ''].join('\n');
+      data.sign = this.sign(str);
       return data;
     }
     return result;
@@ -423,9 +426,10 @@ class Pay {
         timestamp: parseInt(+new Date() / 1000 + '').toString(),
         noncestr: Math.random().toString(36).substr(2, 15),
         prepayid: result.prepay_id,
-        paySign: '',
+        sign: '',
       };
-      data.paySign = this.sign(data);
+      const str = [data.appid, data.timestamp, data.noncestr, data.package, ''].join('\n');
+      data.sign = this.sign(str);
       return data;
     }
     return result;
@@ -456,7 +460,8 @@ class Pay {
         signType: 'RSA',
         paySign: '',
       };
-      data.paySign = this.sign(data);
+      const str = [data.appId, data.timeStamp, data.nonceStr, data.package, ''].join('\n');
+      data.paySign = this.sign(str);
       return data;
     }
     return result;
@@ -487,7 +492,8 @@ class Pay {
         signType: 'RSA',
         paySign: '',
       };
-      data.paySign = this.sign(data);
+      const str = [data.appId, data.timeStamp, data.nonceStr, data.package, ''].join('\n');
+      data.paySign = this.sign(str);
       return data;
     }
     return result;
