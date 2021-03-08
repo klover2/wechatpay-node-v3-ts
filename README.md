@@ -129,7 +129,7 @@ try {
 |v1.2.1|修改app、jsapi、native支付字段scene_info 改为可选|
 |v1.2.2|增加获取序列号方法|
 |v1.2.3|修改小程序支付签名错误和取消serial_no字段必填|
-|v1.2.4|增加普通订单的退款和查询|
+|v1.3.0|增加普通订单的退款和查询|
 
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)
