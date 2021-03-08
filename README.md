@@ -1,6 +1,7 @@
 
 # 微信支付v3 支持在ts和js中使用
 
+## 欢迎大家加入一起完善这个api
 ## 前言
 微信官方在2020-12-25正式开放了[v3](https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml)版本的接口,相比较旧版本[v2](https://pay.weixin.qq.com/wiki/doc/api/index.html)有了不少改变,例如：
 * 遵循统一的Restful的设计风格
