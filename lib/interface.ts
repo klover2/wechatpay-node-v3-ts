@@ -130,3 +130,32 @@ export interface Ifundflowbill {
   account_type: string;
   tar_type?: string;
 }
+export interface Irefunds {
+  out_refund_no: string;
+  reason?: string;
+  notify_url?: string;
+  funds_account?: string;
+  amount: IRamount;
+  goods_detail?: IRgoodsDetail[];
+}
+export interface Irefunds1 extends Irefunds {
+  transaction_id: string;
+  out_trade_no?: string;
+}
+export interface Irefunds2 extends Irefunds {
+  transaction_id?: string;
+  out_trade_no: string;
+}
+interface IRamount {
+  total: number;
+  currency: string;
+  refund: number;
+}
+interface IRgoodsDetail {
+  merchant_goods_id: string;
+  wechatpay_goods_id?: string;
+  goods_name?: string;
+  refund_quantity: number;
+  unit_price: number;
+  refund_amount: number;
+}

@@ -48,7 +48,7 @@ const params = {
   # }
 ```
 
-## 回调解密
+## 回调解密 （支付成功通知 退款通知）
 ```bash
 # key 用商户平台上设置的APIv3密钥【微信商户平台—>账户设置—>API安全—>设置APIv3密钥】，记为key；
 const result = pay.decipher_gcm(ciphertext, associated_data, nonce, key);
@@ -67,4 +67,26 @@ const result = pay.decipher_gcm(ciphertext, associated_data, nonce, key);
 #   payer: { openid: '' },
 #   amount: { total: 1, payer_total: 1, currency: 'CNY', payer_currency: 'CNY' }
 # }
+```
+
+## 申请退款 （这里只是普通订单退款 合单支付商户号不支持 以后可以测试会补上）
+```js
+const params = {
+    out_trade_no: '1615171309328',
+    out_refund_no: '1615171380622',
+    reason: '测试',
+    amount: {
+      refund: 1,
+      total: 1,
+      currency: 'CNY',
+    },
+  };
+  console.log(params);
+  const result = await pay.refunds(params);
+  console.log(result);
+```
+## 查询退款
+```js
+ const result = await pay.find_refunds('1615171380622');
+  console.log(result);
 ```

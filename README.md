@@ -114,6 +114,8 @@ try {
 |[查询合单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_11.shtml)|[combine_query](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
 |[关闭合单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_12.shtml)|[combine_close](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
 |[获取序列号]()|[getSN](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)|
+|[申请退款](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_9.shtml)|[refunds](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)|
+|[查询退款](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_10.shtml)|[find_refunds](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)|
 
 
 
@@ -126,6 +128,7 @@ try {
 |v1.2.1|修改app、jsapi、native支付字段scene_info 改为可选|
 |v1.2.2|增加获取序列号方法|
 |v1.2.3|修改小程序支付签名错误和取消serial_no字段必填|
+|v1.2.4|增加普通订单的退款和查询|
 
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)

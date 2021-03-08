@@ -14,6 +14,8 @@ import {
   Ifundflowbill,
   Iapp,
   Ioptions,
+  Irefunds1,
+  Irefunds2,
 } from './lib/interface';
 import {
   IcombineH5,
@@ -614,6 +616,32 @@ class Pay {
   public async downloadbill(download_url: string) {
     const authorization = this.init('GET', download_url);
     return await this.getRequest(download_url, authorization);
+  }
+  /**
+   * 申请退款
+   * @param 请求参数 路径 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_9.shtml
+   */
+  public async refunds(params: Irefunds1 | Irefunds2): Promise<object> {
+    const url = 'https://api.mch.weixin.qq.com/v3/refund/domestic/refunds';
+    // 请求参数
+    const _params = {
+      ...params,
+    };
+
+    const authorization = this.init('POST', url, _params);
+
+    return await this.postRequest(url, _params, authorization);
+  }
+  /**
+   * 查询单笔退款
+   * @param 请求参数 路径 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_10.shtml
+   */
+  public async find_refunds(out_refund_no: string): Promise<object> {
+    if (!out_refund_no) throw new Error('缺少out_refund_no');
+    const url = `https://api.mch.weixin.qq.com/v3/refund/domestic/refunds/${out_refund_no}`;
+
+    const authorization = this.init('GET', url);
+    return await this.getRequest(url, authorization);
   }
 }
 
