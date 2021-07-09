@@ -240,6 +240,7 @@ class Pay {
         'Content-Type': 'application/json',
         'User-Agent': this.userAgent,
         Authorization: authorization,
+         'Accept-Encoding': 'gzip',
       });
       return {
         status: result.status,
