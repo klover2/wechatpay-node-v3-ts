@@ -130,16 +130,8 @@ try {
 |v1.2.2|增加获取序列号方法|
 |v1.2.3|修改小程序支付签名错误和取消serial_no字段必填|
 |v1.3.0|增加普通订单的退款和查询|
+|v1.3.1|修复APP调起支付时出现“支付验证签名失败“的问题|
 
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)
 [v3支付文档](https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml)
-
-## 其他推荐
-[微信v2支付npm包](https://www.npmjs.com/package/node-wxpay3)
-
-[支付宝npm包](https://www.npmjs.com/package/node-alipay1)
-
-[快递鸟npm包](https://www.npmjs.com/package/node-kdniao)
-
-[微信支付v3文档图片上传](https://blog.csdn.net/weixin_43110609/article/details/112318118)
