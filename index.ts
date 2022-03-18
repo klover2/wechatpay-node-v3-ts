@@ -15,6 +15,7 @@ class Pay {
   private authType = 'WECHATPAY2-SHA256-RSA2048'; // 认证类型，目前为WECHATPAY2-SHA256-RSA2048
   private userAgent = '127.0.0.1'; // User-Agent
   private key?: string; // APIv3密钥
+  private static certificates: { [key in string]: string } = {}; // 商户平台证书 key 是 serialNo, value 是 publicKey
   /**
    * 构造器
    * @param appid 直连商户申请的公众号或移动应用appid。
@@ -70,6 +71,94 @@ class Pay {
       if (!this.publicKey) throw new Error('缺少公钥');
       if (!this.serial_no) this.serial_no = this.getSN(this.publicKey);
     }
+  }
+  /**
+   * 拉取平台证书到 Pay.certificates 中
+   */
+  private async fetchCertificates(apiSecret: string) {
+    const url = 'https://api.mch.weixin.qq.com/v3/certificates';
+    const authorization = this.init('GET', url);
+    const result = await this.getRequest(url, authorization);
+
+    if (result.status === 200) {
+      const data = result.data as {
+        effective_time: string;
+        expire_time: string;
+        serial_no: string;
+        encrypt_certificate: {
+          algorithm: string;
+          associated_data: string;
+          ciphertext: string;
+          nonce: string;
+        };
+      }[];
+
+      const newCertificates = {} as {[key in string]: string};
+
+      data.forEach((item) => {
+        const decryptCertificate = this.decipher_gcm<string>(
+          item.encrypt_certificate.ciphertext,
+          item.encrypt_certificate.associated_data,
+          item.encrypt_certificate.nonce,
+          apiSecret,
+        );
+
+        newCertificates[item.serial_no] = x509_1.Certificate.fromPEM(
+          Buffer.from(decryptCertificate),
+        ).publicKey.toPEM();
+      });
+
+      Pay.certificates = {
+        ...Pay.certificates,
+        ...newCertificates,
+      };
+    } else {
+      throw new Error('拉取平台证书失败');
+    }
+  }
+  /**
+   * 验证签名，提醒：node 取头部信息时需要用小写，例如：req.headers['wechatpay-timestamp']
+   * @param params.timestamp HTTP头Wechatpay-Timestamp 中的应答时间戳
+   * @param params.nonce HTTP头Wechatpay-Nonce 中的应答随机串
+   * @param params.body 应答主体（response Body），需要按照接口返回的顺序进行验签，错误的顺序将导致验签失败。
+   * @param params.serial HTTP头Wechatpay-Serial 证书序列号
+   * @param params.signature HTTP头Wechatpay-Signature 签名
+   */
+  public async verifySign(params: {
+    timestamp: string | number;
+    nonce: string;
+    body: string | Record<string, any>;
+    serial: string;
+    signature: string;
+    apiSecret: string;
+  }) {
+    const {
+      timestamp = '',
+      nonce = '',
+      body = '',
+      serial = '',
+      signature = '',
+      apiSecret = '',
+    } = params;
+
+    let publicKey = Pay.certificates[serial];
+
+    if (!publicKey) {
+      await this.fetchCertificates(apiSecret);
+    }
+
+    publicKey = Pay.certificates[serial];
+
+    if (!publicKey) {
+      throw new Error('平台证书序列号不相符，未找到平台序列号');
+    }
+
+    const bodyStr = typeof body === 'string' ? body : JSON.stringify(body);
+    const data = `${timestamp}\n${nonce}\n${bodyStr}\n`;
+    const verify = crypto.createVerify('RSA-SHA256');
+    verify.update(data);
+
+    return verify.verify(publicKey, signature, 'base64');
   }
   /**
    * 构建请求签名参数
@@ -156,7 +245,7 @@ class Pay {
    * @param nonce 加密使用的随机串
    * @param key  APIv3密钥
    */
-  public decipher_gcm(ciphertext: string, associated_data: string, nonce: string, key?: string): Record<string, any> {
+  public decipher_gcm<T extends any>(ciphertext: string, associated_data: string, nonce: string, key?: string): T {
     if (key) this.key = key;
     if (!this.key) throw new Error('缺少key');
 
