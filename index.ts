@@ -74,8 +74,9 @@ class Pay {
   }
   /**
    * 拉取平台证书到 Pay.certificates 中
+   * @param apiSecret APIv3密钥
    */
-  private async fetchCertificates(apiSecret: string) {
+  private async fetchCertificates(apiSecret?: string) {
     const url = 'https://api.mch.weixin.qq.com/v3/certificates';
     const authorization = this.init('GET', url);
     const result = await this.getRequest(url, authorization);
@@ -123,22 +124,23 @@ class Pay {
    * @param params.body 应答主体（response Body），需要按照接口返回的顺序进行验签，错误的顺序将导致验签失败。
    * @param params.serial HTTP头Wechatpay-Serial 证书序列号
    * @param params.signature HTTP头Wechatpay-Signature 签名
+   * @param params.apiSecret APIv3密钥，如果在 构造器 中有初始化该值(this.key)，则可以不传入。当然传入也可以
    */
   public async verifySign(params: {
     timestamp: string | number;
     nonce: string;
-    body: string | Record<string, any>;
+    body: Record<string, any> | string;
     serial: string;
     signature: string;
-    apiSecret: string;
+    apiSecret?: string;
   }) {
     const {
-      timestamp = '',
-      nonce = '',
-      body = '',
-      serial = '',
-      signature = '',
-      apiSecret = '',
+      timestamp,
+      nonce,
+      body,
+      serial,
+      signature,
+      apiSecret,
     } = params;
 
     let publicKey = Pay.certificates[serial];
@@ -259,7 +261,12 @@ class Pay {
     decipher.setAAD(Buffer.from(associated_data));
     const decoded = decipher.update(data, undefined, 'utf8');
     decipher.final();
-    return JSON.parse(decoded);
+
+    try {
+      return JSON.parse(decoded);
+    } catch (e) {
+      return decoded as T;
+    }
   }
   /**
    * 参数初始化
