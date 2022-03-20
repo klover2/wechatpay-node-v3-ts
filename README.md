@@ -117,6 +117,7 @@ try {
 |[获取序列号]()|[getSN](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)|
 |[申请退款](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_9.shtml)|[refunds](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)|
 |[查询退款](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_10.shtml)|[find_refunds](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)|
+|[签名验证](https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay4_1.shtml)|[verifySign](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/verifySign.md)|
 
 
 
