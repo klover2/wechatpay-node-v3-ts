@@ -1,6 +1,6 @@
 {
   "name": "wechatpay-node-v3",
-  "version": "1.2.4",
+  "version": "1.3.2",
   "description": "微信支付文档v3",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,14 +24,15 @@
   "devDependencies": {
     "@types/node": "^14.14.12",
     "@types/superagent": "^4.1.10",
-    "@typescript-eslint/eslint-plugin": "^4.9.1",
-    "@typescript-eslint/parser": "^4.9.1",
-    "eslint": "^7.15.0",
-    "eslint-config-prettier": "^7.0.0",
-    "eslint-plugin-prettier": "^3.2.0",
-    "prettier": "^2.2.1",
     "ts-node": "^9.1.1",
-    "typescript": "^4.1.2"
+    "typescript": "^4.1.2",
+    "@nestjs/common": "^8.2.4",
+    "@typescript-eslint/eslint-plugin": "3.0.2",
+    "@typescript-eslint/parser": "3.0.2",
+    "eslint": "7.1.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-import": "^2.20.1",
+    "prettier": "^1.19.1"
   },
   "files": [
     "dist"

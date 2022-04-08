@@ -1,6 +1,7 @@
 
 # 微信支付v3 支持在ts和js中使用
 
+## 欢迎大家加入一起完善这个api
 ## 前言
 微信官方在2020-12-25正式开放了[v3](https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml)版本的接口,相比较旧版本[v2](https://pay.weixin.qq.com/wiki/doc/api/index.html)有了不少改变,例如：
 * 遵循统一的Restful的设计风格
@@ -116,6 +117,7 @@ try {
 |[获取序列号]()|[getSN](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)|
 |[申请退款](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_9.shtml)|[refunds](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)|
 |[查询退款](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_10.shtml)|[find_refunds](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)|
+|[签名验证](https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay4_1.shtml)|[verifySign](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/verifySign.md)|
 
 
 
@@ -128,17 +130,10 @@ try {
 |v1.2.1|修改app、jsapi、native支付字段scene_info 改为可选|
 |v1.2.2|增加获取序列号方法|
 |v1.2.3|修改小程序支付签名错误和取消serial_no字段必填|
-|v1.2.4|增加普通订单的退款和查询|
+|v1.3.0|增加普通订单的退款和查询|
+|v1.3.1|修复APP调起支付时出现“支付验证签名失败“的问题|
+|v1.3.2|增加请求成功后的签名验证|
 
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)
 [v3支付文档](https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml)
-
-## 其他推荐
-[微信v2支付npm包](https://www.npmjs.com/package/node-wxpay3)
-
-[支付宝npm包](https://www.npmjs.com/package/node-alipay1)
-
-[快递鸟npm包](https://www.npmjs.com/package/node-kdniao)
-
-[微信支付v3文档图片上传](https://blog.csdn.net/weixin_43110609/article/details/112318118)
