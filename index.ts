@@ -94,9 +94,9 @@ class Pay {
         };
       }[];
 
-      const newCertificates = {} as {[key in string]: string};
+      const newCertificates = {} as { [key in string]: string };
 
-      data.forEach((item) => {
+      data.forEach(item => {
         const decryptCertificate = this.decipher_gcm<string>(
           item.encrypt_certificate.ciphertext,
           item.encrypt_certificate.associated_data,
@@ -104,9 +104,7 @@ class Pay {
           apiSecret,
         );
 
-        newCertificates[item.serial_no] = x509_1.Certificate.fromPEM(
-          Buffer.from(decryptCertificate),
-        ).publicKey.toPEM();
+        newCertificates[item.serial_no] = x509_1.Certificate.fromPEM(Buffer.from(decryptCertificate)).publicKey.toPEM();
       });
 
       Pay.certificates = {
@@ -134,14 +132,7 @@ class Pay {
     signature: string;
     apiSecret?: string;
   }) {
-    const {
-      timestamp,
-      nonce,
-      body,
-      serial,
-      signature,
-      apiSecret,
-    } = params;
+    const { timestamp, nonce, body, serial, signature, apiSecret } = params;
 
     let publicKey = Pay.certificates[serial];
 
@@ -296,6 +287,7 @@ class Pay {
           'Content-Type': 'application/json',
           'User-Agent': this.userAgent,
           Authorization: authorization,
+          'Accept-Encoding': 'gzip',
         });
       return {
         status: result.status,
