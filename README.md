@@ -133,6 +133,7 @@ try {
 |v1.3.0|增加普通订单的退款和查询|
 |v1.3.1|修复APP调起支付时出现“支付验证签名失败“的问题|
 |v1.3.2|增加请求成功后的签名验证|
+|v1.3.3|修复superagent post请求异常 Z_DATA_ERROR|
 
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)
