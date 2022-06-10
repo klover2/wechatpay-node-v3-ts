@@ -312,6 +312,7 @@ class Pay {
         Accept: 'application/json',
         'User-Agent': this.userAgent,
         Authorization: authorization,
+        'Accept-Encoding': 'gzip',
       });
 
       let data = {};
