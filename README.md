@@ -5,9 +5,8 @@
 </p>
 
 [![OSCS Status](https://www.oscs1024.com/platform/badge/klover2/wechatpay-node-v3-ts.svg?size=small)](https://www.oscs1024.com/project/klover2/wechatpay-node-v3-ts?ref=badge_small)
-[![npm version](https://www.npmjs.com/package/wechatpay-node-v3)](https://www.npmjs.com/package/wechatpay-node-v3)
-[![npm downloads](https://www.npmjs.com/package/wechatpay-node-v3)](https://www.npmjs.com/package/wechatpay-node-v3)
-[![contributors](https://img.shields.io/github/contributors/wechatpay-node-v3-ts/wechatpay-node-v3-ts)](https://github.com/wechatpay-node-v3-ts/wechatpay-node-v3-ts/graphs/contributors)
+[![npm version](https://badgen.net/npm/v/wechatpay-node-v3)](https://www.npmjs.com/package/wechatpay-node-v3)
+[![contributors](https://img.shields.io/github/contributors/wechatpay-node-v3-ts/wechatpay-node-v3-ts)](https://github.com/klover2/wechatpay-node-v3-ts/graphs/contributors)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # 微信支付v3 支持在ts和js中使用
