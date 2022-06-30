@@ -448,7 +448,7 @@ class Pay {
         prepayid: result.prepay_id,
         sign: '',
       };
-      const str = [data.appid, data.timestamp, data.noncestr, data.package, ''].join('\n');
+      const str = [data.appid, data.timestamp, data.noncestr, data.prepayid, ''].join('\n');
       data.sign = this.sign(str);
       return data;
     }
