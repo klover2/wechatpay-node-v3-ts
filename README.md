@@ -135,6 +135,7 @@ try {
 |v1.3.2|增加请求成功后的签名验证|
 |v1.3.3|修复superagent post请求异常 Z_DATA_ERROR|
 |v1.3.4|修复superagent get请求异常 Z_DATA_ERROR|
+|v1.3.5|修复APP支付签名错误|
 
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)
