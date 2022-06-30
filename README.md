@@ -1,4 +1,7 @@
 
+
+[![OSCS Status](https://www.oscs1024.com/platform/badge/klover2/wechatpay-node-v3-ts.svg?size=small)](https://www.oscs1024.com/project/klover2/wechatpay-node-v3-ts?ref=badge_small)
+
 # 微信支付v3 支持在ts和js中使用
 
 ## 欢迎大家加入一起完善这个api
@@ -140,3 +143,6 @@ try {
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)
 [v3支付文档](https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml)
+
+
+
