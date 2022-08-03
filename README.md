@@ -153,4 +153,13 @@ try {
 [v3支付文档](https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml)
 
 
+## 贡献
+
+<a href="https://github.com/klover2/wechatpay-node-v3-ts/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=klover2/wechatpay-node-v3-ts" />
+</a>
+
+欢迎提[存在的Bug或者意见](https://github.com/klover2/wechatpay-node-v3-ts/issues)。
+
+
 
