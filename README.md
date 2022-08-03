@@ -154,7 +154,6 @@ try {
 
 
 ## 贡献
-
 <a href="https://github.com/klover2/wechatpay-node-v3-ts/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=klover2/wechatpay-node-v3-ts" />
 </a>
