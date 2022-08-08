@@ -13,7 +13,6 @@ const pay = new WxPay({
 ## 使用
 ```bash
 const res = await pay.batches_transfer({
-    appid: 'wxf636efh567hg4356',
     out_batch_no: 'plfk2020042013',
     batch_name: '2019年1月深圳分部报销单',
     batch_remark: '2019年1月深圳分部报销单',
