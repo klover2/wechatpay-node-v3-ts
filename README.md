@@ -129,6 +129,7 @@ try {
 |[申请退款](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_9.shtml)|[refunds](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)|
 |[查询退款](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_10.shtml)|[find_refunds](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)|
 |[签名验证](https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay4_1.shtml)|[verifySign](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/verifySign.md)|
+|[微信提现到零钱](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter4_3_1.shtml)|[batches_transfer](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/batches_transfer.md)|
 
 
 
@@ -147,6 +148,7 @@ try {
 |v1.3.3|修复superagent post请求异常 Z_DATA_ERROR|
 |v1.3.4|修复superagent get请求异常 Z_DATA_ERROR|
 |v1.3.5|修复APP支付签名错误|
+|v2.0.0|增加提现到零钱和优化接口参数，规定返回参数格式，其他接口会后续优化|
 
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)

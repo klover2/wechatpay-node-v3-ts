@@ -3,3 +3,4 @@ dist
 test
 .vscode
 yarn.lock
+test.ts
