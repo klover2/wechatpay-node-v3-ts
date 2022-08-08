@@ -5,15 +5,17 @@ const x509_1 = require('@fidm/x509');
 
 import { Ipay, Ih5, Inative, Ijsapi, Iquery1, Iquery2, Itradebill, Ifundflowbill, Iapp, Ioptions, Irefunds1, Irefunds2 } from './lib/interface';
 import { IcombineH5, IcombineNative, IcombineApp, IcombineJsapi, IcloseSubOrders } from './lib/combine_interface';
+import { BatchesTransfer } from './lib/interface-v2';
+import { Base } from './lib/base';
 
-class Pay {
+class Pay extends Base {
   private appid: string; //  直连商户申请的公众号或移动应用appid。
   private mchid: string; // 商户号
   private serial_no = ''; // 证书序列号
   private publicKey?: Buffer; // 公钥
   private privateKey?: Buffer; // 密钥
   private authType = 'WECHATPAY2-SHA256-RSA2048'; // 认证类型，目前为WECHATPAY2-SHA256-RSA2048
-  private userAgent = '127.0.0.1'; // User-Agent
+
   private key?: string; // APIv3密钥
   private static certificates: { [key in string]: string } = {}; // 商户平台证书 key 是 serialNo, value 是 publicKey
   /**
@@ -44,7 +46,9 @@ class Pay {
    * @param key 可选参数 APIv3密钥
    */
   public constructor(obj: Ipay);
-  constructor(arg1: Ipay | string, mchid?: string, publicKey?: Buffer, privateKey?: Buffer, optipns?: Ioptions) {
+  public constructor(arg1: Ipay | string, mchid?: string, publicKey?: Buffer, privateKey?: Buffer, optipns?: Ioptions) {
+    super();
+
     if (arg1 instanceof Object) {
       this.appid = arg1.appid;
       this.mchid = arg1.mchid;
@@ -174,13 +178,6 @@ class Pay {
   // 随机字符串
   // 预支付交易会话ID
   private sign(str: string) {
-    // let str = '';
-    // const exclude = ['signType', 'paySign', 'status', 'package', 'partnerid'];
-    // for (const key in params) {
-    //   if (!exclude.includes(key)) {
-    //     str = str + params[key] + '\n';
-    //   }
-    // }
     return this.sha256WithRsa(str);
   }
   // 获取序列号
@@ -271,84 +268,6 @@ class Pay {
     const signature = this.getSignature(method, nonce_str, timestamp, url.replace('https://api.mch.weixin.qq.com', ''), params);
     const authorization = this.getAuthorization(nonce_str, timestamp, signature);
     return authorization;
-  }
-  /**
-   * post 请求
-   * @param url  请求接口
-   * @param params 请求参数
-   */
-  private async postRequest(url: string, params: Record<string, any>, authorization: string): Promise<Record<string, any>> {
-    try {
-      const result = await request
-        .post(url)
-        .send(params)
-        .set({
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'User-Agent': this.userAgent,
-          Authorization: authorization,
-          'Accept-Encoding': 'gzip',
-        });
-      return {
-        status: result.status,
-        ...result.body,
-      };
-    } catch (error) {
-      const err = JSON.parse(JSON.stringify(error));
-      return {
-        status: err.status,
-        ...(err.response.text && JSON.parse(err.response.text)),
-      };
-    }
-  }
-  /**
-   * get 请求
-   * @param url  请求接口
-   * @param params 请求参数
-   */
-  private async getRequest(url: string, authorization: string): Promise<Record<string, any>> {
-    try {
-      const result = await request.get(url).set({
-        Accept: 'application/json',
-        'User-Agent': this.userAgent,
-        Authorization: authorization,
-        'Accept-Encoding': 'gzip',
-      });
-
-      let data = {};
-      switch (result.type) {
-        case 'application/json':
-          data = {
-            status: result.status,
-            ...result.body,
-          };
-          break;
-        case 'text/plain':
-          data = {
-            status: result.status,
-            data: result.text,
-          };
-          break;
-        case 'application/x-gzip':
-          data = {
-            status: result.status,
-            data: result.body,
-          };
-          break;
-        default:
-          data = {
-            status: result.status,
-            ...result.body,
-          };
-      }
-      return data;
-    } catch (error) {
-      const err = JSON.parse(JSON.stringify(error));
-      return {
-        status: err.status,
-        ...(err.response.text && JSON.parse(err.response.text)),
-      };
-    }
   }
   // ---------------支付相关接口--------------//
   /**
@@ -696,6 +615,22 @@ class Pay {
 
     const authorization = this.init('GET', url);
     return await this.getRequest(url, authorization);
+  }
+  /**
+   * 发起商家转账零钱
+   * @documentation 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter4_3_1.shtml
+   */
+  public async batches_transfer(params: BatchesTransfer.Input): Promise<BatchesTransfer.IOutput> {
+    const url = 'https://api.mch.weixin.qq.com/v3/transfer/batches';
+    // 请求参数
+    const _params = {
+      appid: this.appid,
+      ...params,
+    };
+
+    const authorization = this.init('POST', url, _params);
+
+    return await this.postRequestV2(url, _params, authorization);
   }
 }
 

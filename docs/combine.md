@@ -1,7 +1,6 @@
 ```bash
 import WxPay from 'wechatpay-node-v3';
 import fs from 'fs';
-import request from 'superagent';
 
 const pay = new WxPay({
   appid: '直连商户申请的公众号或移动应用appid',
