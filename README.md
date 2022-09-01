@@ -84,7 +84,7 @@ try {
     console.log(error);
   }
 ```
-如果你使用的是nest框架，请结合`est-wechatpay-node-v3`一起使用。
+如果你使用的是nest框架，请结合`nest-wechatpay-node-v3`一起使用。
 
 ## WxPay 介绍
 `import WxPay from 'wechatpay-node-v3';` 或者 `const WxPay = require('wechatpay-node-v3')`
