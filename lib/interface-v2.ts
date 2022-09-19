@@ -57,11 +57,10 @@ export declare namespace BatchesTransfer {
     data?: DataOutput;
   }
 
-
   /**
    * 商家批次单号查询参数
    */
-  export interface QueryParam {
+  export interface QueryTransfer {
     /**商户系统内部的商家批次单号，要求此参数只能由数字、大小写字母组成，在商户系统内部唯一 */
     out_batch_no: string;
     /**商户可选择是否查询指定状态的转账明细单，当转账批次单状态为“FINISHED”（已完成）时，才会返回满足条件的转账明细单 */

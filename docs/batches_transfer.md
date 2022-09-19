@@ -11,7 +11,7 @@ const pay = new WxPay({
 });
 ```
 ## 使用
-```bash
+```js
 const res = await pay.batches_transfer({
     out_batch_no: 'plfk2020042013',
     batch_name: '2019年1月深圳分部报销单',
@@ -29,4 +29,9 @@ const res = await pay.batches_transfer({
     ],
   });
   console.log(result);
+```
+
+```js
+// 商家批次单号查询批次单
+const res = await pay.query_transfer()
 ```

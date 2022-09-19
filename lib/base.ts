@@ -3,13 +3,15 @@ import { Output } from './interface-v2';
 
 export class Base {
   protected userAgent = '127.0.0.1'; // User-Agent
-  constructor() { }
+  constructor() {}
 
-  protected objectToQueryString(object: Record<string, any>): string {
-    return Object.keys(object).map(function (key) {
-      return encodeURIComponent(key) + '=' +
-        encodeURIComponent(object[key]);
-    }).join('&');
+  protected objectToQueryString(object: Record<string, any>, exclude: string[] = []): string {
+    return Object.keys(object)
+      .filter(key => !exclude.includes(key))
+      .map(key => {
+        return encodeURIComponent(key) + '=' + encodeURIComponent(object[key]);
+      })
+      .join('&');
   }
   /**
    * post 请求
@@ -73,16 +75,19 @@ export class Base {
   /**
    * get 请求
    * @param url  请求接口
-   * @param params 请求参数
+   * @param query 请求参数
    */
-  protected async getRequest(url: string, authorization: string, params: Record<string, any> = {}): Promise<Record<string, any>> {
+  protected async getRequest(url: string, authorization: string, query: Record<string, any> = {}): Promise<Record<string, any>> {
     try {
-      const result = await request.get(url).query(params).set({
-        Accept: 'application/json',
-        'User-Agent': this.userAgent,
-        Authorization: authorization,
-        'Accept-Encoding': 'gzip',
-      });
+      const result = await request
+        .get(url)
+        .query(query)
+        .set({
+          Accept: 'application/json',
+          'User-Agent': this.userAgent,
+          Authorization: authorization,
+          'Accept-Encoding': 'gzip',
+        });
 
       let data = {};
       switch (result.type) {
