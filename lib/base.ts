@@ -3,7 +3,14 @@ import { Output } from './interface-v2';
 
 export class Base {
   protected userAgent = '127.0.0.1'; // User-Agent
-  constructor() {}
+  constructor() { }
+
+  protected objectToQueryString(object: Record<string, any>): string {
+    return Object.keys(object).map(function (key) {
+      return encodeURIComponent(key) + '=' +
+        encodeURIComponent(object[key]);
+    }).join('&');
+  }
   /**
    * post 请求
    * @param url  请求接口
@@ -38,12 +45,13 @@ export class Base {
    * @param url  请求接口
    * @param params 请求参数
    */
-  protected async postRequestV2(url: string, params: Record<string, any>, authorization: string): Promise<Output> {
+  protected async postRequestV2(url: string, params: Record<string, any>, authorization: string, headers = {}): Promise<Output> {
     try {
       const result = await request
         .post(url)
         .send(params)
         .set({
+          ...headers,
           Accept: 'application/json',
           'Content-Type': 'application/json',
           'User-Agent': this.userAgent,
@@ -67,9 +75,9 @@ export class Base {
    * @param url  请求接口
    * @param params 请求参数
    */
-  protected async getRequest(url: string, authorization: string): Promise<Record<string, any>> {
+  protected async getRequest(url: string, authorization: string, params: Record<string, any> = {}): Promise<Record<string, any>> {
     try {
-      const result = await request.get(url).set({
+      const result = await request.get(url).query(params).set({
         Accept: 'application/json',
         'User-Agent': this.userAgent,
         Authorization: authorization,
