@@ -56,4 +56,21 @@ export declare namespace BatchesTransfer {
   export interface IOutput extends Output {
     data?: DataOutput;
   }
+
+
+  /**
+   * 商家批次单号查询参数
+   */
+  export interface QueryParam {
+    /**商户系统内部的商家批次单号，要求此参数只能由数字、大小写字母组成，在商户系统内部唯一 */
+    out_batch_no: string;
+    /**商户可选择是否查询指定状态的转账明细单，当转账批次单状态为“FINISHED”（已完成）时，才会返回满足条件的转账明细单 */
+    need_query_detail: boolean;
+    /**次请求资源（转账明细单）的起始位置，从0开始，默认值为0 */
+    offset?: number;
+    /**该次请求可返回的最大资源（转账明细单）条数，最小20条，最大100条，不传则默认20条。不足20条按实际条数返回 */
+    limit?: number;
+    /**查询指定状态的转账明细单，当need_query_detail为true时，该字段必填 */
+    detail_status: 'ALL' | 'SUCCESS' | 'FAIL';
+  }
 }

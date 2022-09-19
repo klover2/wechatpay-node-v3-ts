@@ -1,6 +1,5 @@
 'use strict';
 import crypto from 'crypto';
-import request from 'superagent';
 const x509_1 = require('@fidm/x509');
 
 import { Ipay, Ih5, Inative, Ijsapi, Iquery1, Iquery2, Itradebill, Ifundflowbill, Iapp, Ioptions, Irefunds1, Irefunds2 } from './lib/interface';
@@ -261,8 +260,8 @@ class Pay extends Base {
    */
   private init(method: string, url: string, params?: Record<string, any>) {
     const nonce_str = Math.random()
-        .toString(36)
-        .substr(2, 15),
+      .toString(36)
+      .substr(2, 15),
       timestamp = parseInt(+new Date() / 1000 + '').toString();
 
     const signature = this.getSignature(method, nonce_str, timestamp, url.replace('https://api.mch.weixin.qq.com', ''), params);
@@ -548,11 +547,11 @@ class Pay extends Base {
       ...params,
     };
     const querystring = Object.keys(_params)
-      .filter(function(key) {
+      .filter(function (key) {
         return !!_params[key];
       })
       .sort()
-      .map(function(key) {
+      .map(function (key) {
         return key + '=' + _params[key];
       })
       .join('&');
@@ -570,11 +569,11 @@ class Pay extends Base {
       ...params,
     };
     const querystring = Object.keys(_params)
-      .filter(function(key) {
+      .filter(function (key) {
         return !!_params[key];
       })
       .sort()
-      .map(function(key) {
+      .map(function (key) {
         return key + '=' + _params[key];
       })
       .join('&');
@@ -630,7 +629,18 @@ class Pay extends Base {
 
     const authorization = this.init('POST', url, _params);
 
-    return await this.postRequestV2(url, _params, authorization);
+    return await this.postRequestV2(url, _params, authorization, { 'Wechatpay-Serial': this.serial_no });
+  }
+
+  /**
+  * 商家批次单号查询批次单
+  * @documentation 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter4_3_5.shtml
+  */
+  public async query_transfer(params: BatchesTransfer.QueryParam): Promise<Record<string, any>> {
+    const url = `https://api.mch.weixin.qq.com/v3/transfer/batches/out-batch-no/${params.out_batch_no}`;
+    delete (params as any).out_batch_no
+    const authorization = this.init('GET', url + '?' + this.objectToQueryString(params));
+    return await this.getRequest(url, authorization, params);
   }
 }
 
