@@ -6,12 +6,14 @@ export class Base {
   constructor() {}
 
   protected objectToQueryString(object: Record<string, any>, exclude: string[] = []): string {
-    return Object.keys(object)
+    let str = Object.keys(object)
       .filter(key => !exclude.includes(key))
       .map(key => {
         return encodeURIComponent(key) + '=' + encodeURIComponent(object[key]);
       })
       .join('&');
+    if (str) str = '?' + str;
+    return str || '';
   }
   /**
    * post 请求

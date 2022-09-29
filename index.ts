@@ -642,7 +642,7 @@ class Pay extends Base {
     params: BatchesTransfer.QueryBatchesTransferByWx.Input,
   ): Promise<BatchesTransfer.QueryBatchesTransferByWx.IOutput> {
     const url = `https://api.mch.weixin.qq.com/v3/transfer/batches/batch-id/${params.batch_id}`;
-    const authorization = this.init('GET', url + '?' + this.objectToQueryString(params), ['batch_id']);
+    const authorization = this.init('GET', url + '?' + this.objectToQueryString(params, ['batch_id']));
     return await this.getRequestV2(url, authorization, params);
   }
   /**
@@ -653,7 +653,7 @@ class Pay extends Base {
     params: BatchesTransfer.QueryBatchesTransferDetailByWx.Input,
   ): Promise<BatchesTransfer.QueryBatchesTransferDetailByWx.IOutput> {
     const url = `https://api.mch.weixin.qq.com/v3/transfer/batches/batch-id/${params.batch_id}/details/detail-id/${params.detail_id}`;
-    const authorization = this.init('GET', url + '?' + this.objectToQueryString(params), ['batch_id', 'detail_id']);
+    const authorization = this.init('GET', url + '?' + this.objectToQueryString(params, ['batch_id', 'detail_id']));
     return await this.getRequestV2(url, authorization, params);
   }
   /**
@@ -664,7 +664,7 @@ class Pay extends Base {
     params: BatchesTransfer.QueryBatchesTransferList.Input,
   ): Promise<BatchesTransfer.QueryBatchesTransferList.IOutput> {
     const url = `https://api.mch.weixin.qq.com/v3/transfer/batches/out-batch-no/${params.out_batch_no}`;
-    const authorization = this.init('GET', url + '?' + this.objectToQueryString(params), ['out_batch_no']);
+    const authorization = this.init('GET', url + '?' + this.objectToQueryString(params, ['out_batch_no']));
     return await this.getRequestV2(url, authorization, params);
   }
   /**
@@ -675,7 +675,7 @@ class Pay extends Base {
     params: BatchesTransfer.QueryBatchesTransferDetail.Input,
   ): Promise<BatchesTransfer.QueryBatchesTransferDetail.IOutput> {
     const url = `https://api.mch.weixin.qq.com/v3/transfer/batches/out-batch-no/${params.out_batch_no}/details/out-detail-no/${params.out_detail_no}`;
-    const authorization = this.init('GET', url + '?' + this.objectToQueryString(params), ['out_batch_no', 'out_detail_no']);
+    const authorization = this.init('GET', url + this.objectToQueryString(params, ['out_batch_no', 'out_detail_no']));
     return await this.getRequestV2(url, authorization, params);
   }
 }
