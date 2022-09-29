@@ -150,6 +150,7 @@ try {
 |v1.3.4|修复superagent get请求异常 Z_DATA_ERROR|
 |v1.3.5|修复APP支付签名错误|
 |v2.0.0|增加提现到零钱和优化接口参数，规定返回参数格式，其他接口会后续优化|
+|v2.0.1|增加请求头Wechatpay-Serial和完善转账其他接口|
 
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)

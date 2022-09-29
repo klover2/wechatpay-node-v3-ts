@@ -222,6 +222,9 @@ class Pay extends Base {
       'serial_no="' +
       this.serial_no +
       '",' +
+      'Wechatpay-Serial="' +
+      this.serial_no +
+      '",' +
       'signature="' +
       signature +
       '"';
@@ -631,15 +634,49 @@ class Pay extends Base {
 
     return await this.postRequestV2(url, _params, authorization, { 'Wechatpay-Serial': this.serial_no });
   }
-
   /**
-   * 商家批次单号查询批次单
+   * 微信批次单号查询批次单API
+   * @documentation 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter4_3_2.shtml
+   */
+  public async query_batches_transfer_list_wx(
+    params: BatchesTransfer.QueryBatchesTransferByWx.Input,
+  ): Promise<BatchesTransfer.QueryBatchesTransferByWx.IOutput> {
+    const url = `https://api.mch.weixin.qq.com/v3/transfer/batches/batch-id/${params.batch_id}`;
+    const authorization = this.init('GET', url + '?' + this.objectToQueryString(params), ['batch_id']);
+    return await this.getRequestV2(url, authorization, params);
+  }
+  /**
+   * 微信明细单号查询明细单API
+   * @documentation 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter4_3_3.shtml
+   */
+  public async query_batches_transfer_detail_wx(
+    params: BatchesTransfer.QueryBatchesTransferDetailByWx.Input,
+  ): Promise<BatchesTransfer.QueryBatchesTransferDetailByWx.IOutput> {
+    const url = `https://api.mch.weixin.qq.com/v3/transfer/batches/batch-id/${params.batch_id}/details/detail-id/${params.detail_id}`;
+    const authorization = this.init('GET', url + '?' + this.objectToQueryString(params), ['batch_id', 'detail_id']);
+    return await this.getRequestV2(url, authorization, params);
+  }
+  /**
+   * 商家批次单号查询批次单API
    * @documentation 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter4_3_5.shtml
    */
-  public async query_transfer(params: BatchesTransfer.QueryTransfer): Promise<Record<string, any>> {
+  public async query_batches_transfer_list(
+    params: BatchesTransfer.QueryBatchesTransferList.Input,
+  ): Promise<BatchesTransfer.QueryBatchesTransferList.IOutput> {
     const url = `https://api.mch.weixin.qq.com/v3/transfer/batches/out-batch-no/${params.out_batch_no}`;
     const authorization = this.init('GET', url + '?' + this.objectToQueryString(params), ['out_batch_no']);
-    return await this.getRequest(url, authorization, params);
+    return await this.getRequestV2(url, authorization, params);
+  }
+  /**
+   * 商家明细单号查询明细单API
+   * @documentation 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter4_3_6.shtml
+   */
+  public async query_batches_transfer_detail(
+    params: BatchesTransfer.QueryBatchesTransferDetail.Input,
+  ): Promise<BatchesTransfer.QueryBatchesTransferDetail.IOutput> {
+    const url = `https://api.mch.weixin.qq.com/v3/transfer/batches/out-batch-no/${params.out_batch_no}/details/out-detail-no/${params.out_detail_no}`;
+    const authorization = this.init('GET', url + '?' + this.objectToQueryString(params), ['out_batch_no', 'out_detail_no']);
+    return await this.getRequestV2(url, authorization, params);
   }
 }
 

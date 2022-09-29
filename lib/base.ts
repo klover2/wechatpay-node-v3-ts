@@ -124,4 +124,56 @@ export class Base {
       };
     }
   }
+  /**
+   * get 请求 v2
+   * @param url  请求接口
+   * @param query 请求参数
+   */
+  protected async getRequestV2(url: string, authorization: string, query: Record<string, any> = {}): Promise<Output> {
+    try {
+      const result = await request
+        .get(url)
+        .query(query)
+        .set({
+          Accept: 'application/json',
+          'User-Agent': this.userAgent,
+          Authorization: authorization,
+          'Accept-Encoding': 'gzip',
+        });
+
+      let data: any = {};
+      switch (result.type) {
+        case 'application/json':
+          data = {
+            status: result.status,
+            data: result.body,
+          };
+          break;
+        case 'text/plain':
+          data = {
+            status: result.status,
+            data: result.text,
+          };
+          break;
+        case 'application/x-gzip':
+          data = {
+            status: result.status,
+            data: result.body,
+          };
+          break;
+        default:
+          data = {
+            status: result.status,
+            data: result.body,
+          };
+      }
+      return data;
+    } catch (error) {
+      const err = JSON.parse(JSON.stringify(error));
+      return {
+        status: err.status,
+        error: err.response.text && JSON.parse(err.response.text),
+      };
+    }
+  }
 }

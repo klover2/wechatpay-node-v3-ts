@@ -32,6 +32,12 @@ const res = await pay.batches_transfer({
 ```
 
 ```js
-// 商家批次单号查询批次单
-const res = await pay.query_transfer()
+// 微信批次单号查询批次单API
+const res = await pay.query_batches_transfer_list_wx()
+// 微信明细单号查询明细单API
+const res = await pay.query_batches_transfer_detail_wx()
+// 商家批次单号查询批次单API
+const res = await pay.query_batches_transfer_list()
+// 商家明细单号查询明细单API
+const res = await pay.query_batches_transfer_detail()
 ```
