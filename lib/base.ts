@@ -5,6 +5,12 @@ export class Base {
   protected userAgent = '127.0.0.1'; // User-Agent
   constructor() {}
 
+  /**
+   * get 请求参数处理
+   * @param object query 请求参数
+   * @param exclude 需要排除的字段
+   * @returns
+   */
   protected objectToQueryString(object: Record<string, any>, exclude: string[] = []): string {
     let str = Object.keys(object)
       .filter(key => !exclude.includes(key))
