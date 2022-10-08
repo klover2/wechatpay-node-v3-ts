@@ -126,7 +126,7 @@ export declare namespace BatchesTransfer {
       /**该次请求可返回的最大资源（转账明细单）条数，最小20条，最大100条，不传则默认20条。不足20条按实际条数返回 */
       limit?: number;
       /**查询指定状态的转账明细单，当need_query_detail为true时，该字段必填 */
-      detail_status: 'ALL' | 'SUCCESS' | 'FAIL';
+      detail_status?: 'ALL' | 'SUCCESS' | 'FAIL';
     }
 
     export interface IOutput extends Output {
@@ -153,7 +153,7 @@ export declare namespace BatchesTransfer {
       /**该次请求可返回的最大资源（转账明细单）条数，最小20条，最大100条，不传则默认20条。不足20条按实际条数返回 */
       limit?: number;
       /**查询指定状态的转账明细单，当need_query_detail为true时，该字段必填 */
-      detail_status: 'ALL' | 'SUCCESS' | 'FAIL';
+      detail_status?: 'ALL' | 'SUCCESS' | 'FAIL';
     }
 
     export interface IOutput extends Output {
