@@ -24,7 +24,7 @@ const res = await pay.batches_transfer({
         transfer_amount: 200000,
         transfer_remark: '2020年4月报销',
         openid: 'o-MYE42l80oelYMDE34nYD456Xoy',
-        user_name: '757b340b45ebef5467rter35gf464344v3542sdf4t6re4tb4f54ty45t4yyry45',
+        user_name: pay.publicEncrypt('张三'),
       },
     ],
   });

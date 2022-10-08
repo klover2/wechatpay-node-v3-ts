@@ -157,20 +157,28 @@ class Pay extends Base {
     return verify.verify(publicKey, signature, 'base64');
   }
   /**
-   * 敏感信息加解密
+   * 敏感信息加密
    * @param str 敏感信息字段（如用户的住址、银行卡号、手机号码等）
    * @returns
    */
-  public async publicEncrypt(str: string) {
-    const res = crypto.publicEncrypt(
-      {
-        key: this.publicKey as Buffer,
-        padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-        oaepHash: 'sha256',
-      },
-      Buffer.from(str),
-    );
-    return res.toString('utf-8');
+  public publicEncrypt(str: string, padding = crypto.constants.RSA_PKCS1_OAEP_PADDING) {
+    if (![crypto.constants.RSA_PKCS1_PADDING, crypto.constants.RSA_PKCS1_OAEP_PADDING].includes(padding)) {
+      throw new Error(`Doesn't supported the padding mode(${padding}), here's only support RSA_PKCS1_OAEP_PADDING or RSA_PKCS1_PADDING.`);
+    }
+    const encrypted = crypto.publicEncrypt({ key: this.publicKey as Buffer, padding, oaepHash: 'sha1' }, Buffer.from(str, 'utf8')).toString('base64');
+    return encrypted;
+  }
+  /**
+   * 敏感信息解密
+   * @param str 敏感信息字段（如用户的住址、银行卡号、手机号码等）
+   * @returns
+   */
+  public privateDecrypt(str: string, padding = crypto.constants.RSA_PKCS1_OAEP_PADDING) {
+    if (![crypto.constants.RSA_PKCS1_PADDING, crypto.constants.RSA_PKCS1_OAEP_PADDING].includes(padding)) {
+      throw new Error(`Doesn't supported the padding mode(${padding}), here's only support RSA_PKCS1_OAEP_PADDING or RSA_PKCS1_PADDING.`);
+    }
+    const decrypted = crypto.privateDecrypt({ key: this.privateKey as Buffer, padding, oaepHash: 'sha1' }, Buffer.from(str, 'base64'));
+    return decrypted.toString('utf8');
   }
   /**
    * 构建请求签名参数
@@ -236,9 +244,6 @@ class Pay extends Base {
       timestamp +
       '",' +
       'serial_no="' +
-      this.serial_no +
-      '",' +
-      'Wechatpay-Serial="' +
       this.serial_no +
       '",' +
       'signature="' +
