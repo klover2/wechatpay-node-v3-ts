@@ -157,6 +157,30 @@ class Pay extends Base {
     return verify.verify(publicKey, signature, 'base64');
   }
   /**
+   * 敏感信息加密
+   * @param str 敏感信息字段（如用户的住址、银行卡号、手机号码等）
+   * @returns
+   */
+  public publicEncrypt(str: string, padding = crypto.constants.RSA_PKCS1_OAEP_PADDING) {
+    if (![crypto.constants.RSA_PKCS1_PADDING, crypto.constants.RSA_PKCS1_OAEP_PADDING].includes(padding)) {
+      throw new Error(`Doesn't supported the padding mode(${padding}), here's only support RSA_PKCS1_OAEP_PADDING or RSA_PKCS1_PADDING.`);
+    }
+    const encrypted = crypto.publicEncrypt({ key: this.publicKey as Buffer, padding, oaepHash: 'sha1' }, Buffer.from(str, 'utf8')).toString('base64');
+    return encrypted;
+  }
+  /**
+   * 敏感信息解密
+   * @param str 敏感信息字段（如用户的住址、银行卡号、手机号码等）
+   * @returns
+   */
+  public privateDecrypt(str: string, padding = crypto.constants.RSA_PKCS1_OAEP_PADDING) {
+    if (![crypto.constants.RSA_PKCS1_PADDING, crypto.constants.RSA_PKCS1_OAEP_PADDING].includes(padding)) {
+      throw new Error(`Doesn't supported the padding mode(${padding}), here's only support RSA_PKCS1_OAEP_PADDING or RSA_PKCS1_PADDING.`);
+    }
+    const decrypted = crypto.privateDecrypt({ key: this.privateKey as Buffer, padding, oaepHash: 'sha1' }, Buffer.from(str, 'base64'));
+    return decrypted.toString('utf8');
+  }
+  /**
    * 构建请求签名参数
    * @param method Http 请求方式
    * @param url 请求接口 例如/v3/certificates
@@ -220,9 +244,6 @@ class Pay extends Base {
       timestamp +
       '",' +
       'serial_no="' +
-      this.serial_no +
-      '",' +
-      'Wechatpay-Serial="' +
       this.serial_no +
       '",' +
       'signature="' +
@@ -594,7 +615,7 @@ class Pay extends Base {
   }
   /**
    * 申请退款
-   * @param 请求参数 路径 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_9.shtml
+   * @param params 请求参数 路径 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_9.shtml
    */
   public async refunds(params: Irefunds1 | Irefunds2): Promise<Record<string, any>> {
     const url = 'https://api.mch.weixin.qq.com/v3/refund/domestic/refunds';
@@ -609,7 +630,7 @@ class Pay extends Base {
   }
   /**
    * 查询单笔退款
-   * @param 请求参数 路径 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_10.shtml
+   * @documentation 请求参数 路径 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_10.shtml
    */
   public async find_refunds(out_refund_no: string): Promise<Record<string, any>> {
     if (!out_refund_no) throw new Error('缺少out_refund_no');

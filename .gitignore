@@ -4,3 +4,4 @@ test
 .vscode
 yarn.lock
 test.ts
+test/*
