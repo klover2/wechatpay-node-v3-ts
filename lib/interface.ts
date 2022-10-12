@@ -159,3 +159,19 @@ interface IRgoodsDetail {
   unit_price: number;
   refund_amount: number;
 }
+
+/**
+ * 证书信息
+ */
+export interface ICertificates {
+  effective_time: string;
+  expire_time: string;
+  serial_no: string;
+  publicKey?: string;
+  encrypt_certificate: {
+    algorithm: string;
+    associated_data: string;
+    ciphertext: string;
+    nonce: string;
+  };
+}

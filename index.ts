@@ -2,7 +2,21 @@
 import crypto from 'crypto';
 const x509_1 = require('@fidm/x509');
 
-import { Ipay, Ih5, Inative, Ijsapi, Iquery1, Iquery2, Itradebill, Ifundflowbill, Iapp, Ioptions, Irefunds1, Irefunds2 } from './lib/interface';
+import {
+  Ipay,
+  Ih5,
+  Inative,
+  Ijsapi,
+  Iquery1,
+  Iquery2,
+  Itradebill,
+  Ifundflowbill,
+  Iapp,
+  Ioptions,
+  Irefunds1,
+  Irefunds2,
+  ICertificates,
+} from './lib/interface';
 import { IcombineH5, IcombineNative, IcombineApp, IcombineJsapi, IcloseSubOrders } from './lib/combine_interface';
 import { BatchesTransfer } from './lib/interface-v2';
 import { Base } from './lib/base';
@@ -16,7 +30,7 @@ class Pay extends Base {
   private authType = 'WECHATPAY2-SHA256-RSA2048'; // 认证类型，目前为WECHATPAY2-SHA256-RSA2048
 
   private key?: string; // APIv3密钥
-  private static certificates: { [key in string]: string } = {}; // 商户平台证书 key 是 serialNo, value 是 publicKey
+  private static certificates: { [key in string]: string } = {}; // 微信平台证书 key 是 serialNo, value 是 publicKey
   /**
    * 构造器
    * @param appid 直连商户申请的公众号或移动应用appid。
@@ -76,8 +90,37 @@ class Pay extends Base {
     }
   }
   /**
+   * 获取微信平台key
+   * @param apiSecret APIv3密钥
+   * @returns
+   */
+  public async get_certificates(apiSecret: string): Promise<ICertificates[]> {
+    const url = 'https://api.mch.weixin.qq.com/v3/certificates';
+    const authorization = this.init('GET', url);
+    const result = await this.getRequest(url, authorization);
+
+    if (result.status === 200) {
+      const data = result.data as ICertificates[];
+
+      for (const item of data) {
+        const decryptCertificate = this.decipher_gcm<string>(
+          item.encrypt_certificate.ciphertext,
+          item.encrypt_certificate.associated_data,
+          item.encrypt_certificate.nonce,
+          apiSecret,
+        );
+        item.publicKey = x509_1.Certificate.fromPEM(Buffer.from(decryptCertificate)).publicKey.toPEM();
+      }
+
+      return data;
+    } else {
+      throw new Error('拉取平台证书失败');
+    }
+  }
+  /**
    * 拉取平台证书到 Pay.certificates 中
    * @param apiSecret APIv3密钥
+   * https://pay.weixin.qq.com/wiki/doc/apiv3/apis/wechatpay5_1.shtml
    */
   private async fetchCertificates(apiSecret?: string) {
     const url = 'https://api.mch.weixin.qq.com/v3/certificates';
@@ -161,11 +204,11 @@ class Pay extends Base {
    * @param str 敏感信息字段（如用户的住址、银行卡号、手机号码等）
    * @returns
    */
-  public publicEncrypt(str: string, padding = crypto.constants.RSA_PKCS1_OAEP_PADDING) {
+  public publicEncrypt(str: string, wxPublicKey: Buffer, padding = crypto.constants.RSA_PKCS1_OAEP_PADDING) {
     if (![crypto.constants.RSA_PKCS1_PADDING, crypto.constants.RSA_PKCS1_OAEP_PADDING].includes(padding)) {
       throw new Error(`Doesn't supported the padding mode(${padding}), here's only support RSA_PKCS1_OAEP_PADDING or RSA_PKCS1_PADDING.`);
     }
-    const encrypted = crypto.publicEncrypt({ key: this.publicKey as Buffer, padding, oaepHash: 'sha1' }, Buffer.from(str, 'utf8')).toString('base64');
+    const encrypted = crypto.publicEncrypt({ key: wxPublicKey, padding, oaepHash: 'sha1' }, Buffer.from(str, 'utf8')).toString('base64');
     return encrypted;
   }
   /**
@@ -646,14 +689,16 @@ class Pay extends Base {
   public async batches_transfer(params: BatchesTransfer.Input): Promise<BatchesTransfer.IOutput> {
     const url = 'https://api.mch.weixin.qq.com/v3/transfer/batches';
     // 请求参数
-    const _params = {
+    const _params = Object.assign({
       appid: this.appid,
       ...params,
-    };
+    });
 
+    const serial_no = _params.wx_serial_no;
+    delete _params.wx_serial_no;
     const authorization = this.init('POST', url, _params);
 
-    return await this.postRequestV2(url, _params, authorization, { 'Wechatpay-Serial': this.serial_no });
+    return await this.postRequestV2(url, _params, authorization, { 'Wechatpay-Serial': serial_no });
   }
   /**
    * 微信批次单号查询批次单API

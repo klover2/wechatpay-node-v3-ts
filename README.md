@@ -153,6 +153,7 @@ try {
 |v2.0.1|增加请求头Wechatpay-Serial和完善转账其他接口|
 |v2.0.2|增加敏感信息加密方法(publicEncrypt)|
 |v2.0.3|修复get请求无参时的签名|
+|v2.0.4|修复敏感信息加密方法(publicEncrypt)使用微信平台公钥|
 
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)
