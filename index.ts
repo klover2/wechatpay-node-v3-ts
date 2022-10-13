@@ -698,7 +698,7 @@ class Pay extends Base {
     delete _params.wx_serial_no;
     const authorization = this.init('POST', url, _params);
 
-    return await this.postRequestV2(url, _params, authorization, { ...(serial_no && { 'Wechatpay-Serial': serial_no }) });
+    return await this.postRequestV2(url, _params, authorization, { 'Wechatpay-Serial': serial_no || this.serial_no });
   }
   /**
    * 微信批次单号查询批次单API
