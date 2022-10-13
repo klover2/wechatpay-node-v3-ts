@@ -42,8 +42,8 @@ export declare namespace BatchesTransfer {
     total_num: number;
     /** 转账明细列表 */
     transfer_detail_list: TransferDetailList[];
-    /** 微信平台证书序列号 */
-    wx_serial_no: string;
+    /** 微信平台证书序列号-Wechatpay-Serial(当有敏感信息加密时,需要当前参数) */
+    wx_serial_no?: string;
   }
 
   export interface DataOutput {

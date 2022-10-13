@@ -24,7 +24,7 @@ const res = await pay.batches_transfer({
     batch_remark: '2019年1月深圳分部报销单',
     total_amount: 4000000,
     total_num: 200,
-    wx_serial_no: certificate.serial_no,
+    wx_serial_no: certificate.serial_no, // 当你需要传user_name时 需要传当前参数
     transfer_detail_list: [
       {
         out_detail_no: 'x23zy545Bd5436',

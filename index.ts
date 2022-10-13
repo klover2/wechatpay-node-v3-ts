@@ -689,16 +689,16 @@ class Pay extends Base {
   public async batches_transfer(params: BatchesTransfer.Input): Promise<BatchesTransfer.IOutput> {
     const url = 'https://api.mch.weixin.qq.com/v3/transfer/batches';
     // 请求参数
-    const _params = Object.assign({
+    const _params = {
       appid: this.appid,
       ...params,
-    });
+    };
 
-    const serial_no = _params.wx_serial_no;
+    const serial_no = _params?.wx_serial_no;
     delete _params.wx_serial_no;
     const authorization = this.init('POST', url, _params);
 
-    return await this.postRequestV2(url, _params, authorization, { 'Wechatpay-Serial': serial_no });
+    return await this.postRequestV2(url, _params, authorization, { ...(serial_no && { 'Wechatpay-Serial': serial_no }) });
   }
   /**
    * 微信批次单号查询批次单API
