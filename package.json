@@ -2,25 +2,36 @@
   "name": "wechatpay-node-v3",
   "version": "2.1.0",
   "description": "微信支付文档v3",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf ./dist && tsc",
-    "release": "npm publish"
-  },
-  "dependencies": {
-    "@fidm/x509": "^1.2.1",
-    "superagent": "^8.0.6"
+  "keywords": [
+    "node",
+    "wechat",
+    "微信支付",
+    "微信提现"
+  ],
+  "homepage": "https://github.com/klover2/wechatpay-node-v3-ts#readme",
+  "bugs": {
+    "url": "https://github.com/klover2/wechatpay-node-v3-ts/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/klover2/wechatpay-node-v3-ts.git"
   },
-  "bugs": {
-    "url": "https://github.com/klover2/wechatpay-node-v3-ts/issues"
+  "license": "MIT",
+  "author": "klover",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rm -rf ./dist && tsc",
+    "release": "npm publish",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "homepage": "https://github.com/klover2/wechatpay-node-v3-ts#readme",
+  "dependencies": {
+    "@fidm/x509": "^1.2.1",
+    "superagent": "^8.0.6"
+  },
   "devDependencies": {
     "@nestjs/common": "^8.2.4",
     "@types/node": "^14.14.12",
@@ -33,16 +44,5 @@
     "prettier": "^1.19.1",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.2"
-  },
-  "files": [
-    "dist"
-  ],
-  "keywords": [
-    "node",
-    "wechat",
-    "微信支付",
-    "微信提现"
-  ],
-  "author": "klover",
-  "license": "MIT"
+  }
 }
