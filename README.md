@@ -156,6 +156,7 @@ try {
 |v2.0.4|修复敏感信息加密方法(publicEncrypt)使用微信平台公钥|
 |v2.0.6|修复发起商家转账零钱参数wx_serial_no(自定义参数，即http请求头Wechatpay-Serial的值)为可选参数|
 |v2.1.0|升级superagent依赖6.1.0到8.0.6|
+|v2.1.1|商家转账API支持场景参数|
 
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)
