@@ -264,3 +264,79 @@ export declare namespace BatchesTransfer {
     }
   }
 }
+
+/**
+ * 分账
+ */
+export declare namespace ProfitSharing {
+  export interface ProfitSharingOrdersReceiversOutput {
+    /** 分账接收方类型 */
+    type: 'MERCHANT_ID' | 'PERSONAL_OPENID';
+    /** 分账接收方账号 */
+    account: string;
+    /** 分账金额 */
+    amount: number;
+    /** 分账描述 */
+    description: string;
+    /** 分账结果 */
+    result: string;
+    /** 分账失败原因 */
+    fail_reason: string;
+    /** 分账创建时间 */
+    create_time: string;
+    /** 分账完成时间 */
+    finish_time: string;
+    /** 分账明细单号 */
+    detail_id: string;
+  }
+
+  export interface ProfitSharingOrderDetailOutput {
+    /** 微信订单号 */
+    transaction_id: string;
+    /** 商户分账单号 */
+    out_order_no: string;
+    /** 微信分账单号 */
+    order_id: string;
+    /** 分账单状态 */
+    state: string;
+    /** 分账接收方列表 */
+    receivers?: ProfitSharingOrdersReceiversOutput[];
+  }
+
+  /**
+   * 请求分账
+   */
+  export namespace CreateProfitSharingOrders {
+    export interface Input {
+      /** 微信分配的商户appid 不传 使用默认 */
+      appid?: string;
+      /** 微信订单号 */
+      transaction_id: string;
+      /** 商户分账单号 */
+      out_order_no: string;
+      /** 分账接收方列表 */
+      receivers: CreateProfitSharingOrdersReceivers[];
+      /** 是否解冻剩余未分资金 */
+      unfreeze_unsplit: boolean;
+      /** 当月敏感信息加密 必填 */
+      wx_serial_no?: string;
+    }
+
+    export interface CreateProfitSharingOrdersReceivers {
+      /** 分账接收方类型 */
+      type: 'MERCHANT_ID' | 'PERSONAL_OPENID';
+      /** 分账接收方账号 */
+      account: string;
+      /** 分账个人接收方姓名 */
+      name?: string;
+      /** 分账金额 */
+      amount: number;
+      /** 分账描述 */
+      description: string;
+    }
+
+    export interface IOutput extends Output {
+      data?: ProfitSharingOrderDetailOutput;
+    }
+  }
+}

@@ -67,6 +67,8 @@ export interface Ipay {
   key?: string;
 }
 export interface Ih5 {
+  appid?: string;
+  mchid?: string;
   description: string;
   out_trade_no: string;
   time_expire?: string;
@@ -78,6 +80,8 @@ export interface Ih5 {
   scene_info: IsceneInfoH5;
 }
 export interface Inative {
+  appid?: string;
+  mchid?: string;
   description: string;
   out_trade_no: string;
   time_expire?: string;
@@ -89,6 +93,8 @@ export interface Inative {
   scene_info?: IsceneInfoNative;
 }
 export interface Ijsapi {
+  appid?: string;
+  mchid?: string;
   description: string;
   out_trade_no: string;
   time_expire?: string;
@@ -101,6 +107,8 @@ export interface Ijsapi {
   scene_info?: IsceneInfoNative;
 }
 export interface Iapp {
+  appid?: string;
+  mchid?: string;
   description: string;
   out_trade_no: string;
   time_expire?: string;

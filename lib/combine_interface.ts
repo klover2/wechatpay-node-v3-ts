@@ -38,6 +38,8 @@ interface IcombinePayerInfo {
 
 // 抛出
 export interface IcombineH5 {
+  combine_appid?: string;
+  combine_mchid?: string;
   combine_out_trade_no: string;
   scene_info: IsceneInfoH5;
   time_start?: string;
@@ -46,6 +48,8 @@ export interface IcombineH5 {
   sub_orders: IsubOrders[];
 }
 export interface IcombineNative {
+  combine_appid?: string;
+  combine_mchid?: string;
   combine_out_trade_no: string;
   scene_info: IsceneInfoNative;
   time_start?: string;
@@ -54,6 +58,8 @@ export interface IcombineNative {
   sub_orders: IsubOrders[];
 }
 export interface IcombineApp {
+  combine_appid?: string;
+  combine_mchid?: string;
   combine_out_trade_no: string;
   scene_info: IsceneInfoNative;
   time_start?: string;
@@ -63,6 +69,8 @@ export interface IcombineApp {
   combine_payer_info?: IcombinePayerInfo;
 }
 export interface IcombineJsapi {
+  combine_appid?: string;
+  combine_mchid?: string;
   combine_out_trade_no: string;
   scene_info: IsceneInfoNative;
   time_start?: string;

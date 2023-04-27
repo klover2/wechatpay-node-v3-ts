@@ -18,7 +18,7 @@ import {
   ICertificates,
 } from './lib/interface';
 import { IcombineH5, IcombineNative, IcombineApp, IcombineJsapi, IcloseSubOrders } from './lib/combine_interface';
-import { BatchesTransfer } from './lib/interface-v2';
+import { BatchesTransfer, ProfitSharing } from './lib/interface-v2';
 import { Base } from './lib/base';
 
 class Pay extends Base {
@@ -335,7 +335,7 @@ class Pay extends Base {
     const authorization = this.getAuthorization(nonce_str, timestamp, signature);
     return authorization;
   }
-  // ---------------支付相关接口--------------//
+  //#region 支付相关接口
   /**
    * h5支付
    * @param params 请求参数 object 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_3_1.shtml
@@ -682,6 +682,8 @@ class Pay extends Base {
     const authorization = this.init('GET', url);
     return await this.getRequest(url, authorization);
   }
+  //#endregion 支付相关接口
+  //#region 商家转账到零钱
   /**
    * 发起商家转账零钱
    * @documentation 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter4_3_1.shtml
@@ -748,6 +750,41 @@ class Pay extends Base {
     const authorization = this.init('GET', url);
     return await this.getRequestV2(url, authorization);
   }
+  //#endregion 商家转账到零钱
+  //#region 分账
+  /**
+   * 请求分账API
+   * @param params
+   * @returns
+   */
+  public async create_profitsharing_orders(
+    params: ProfitSharing.CreateProfitSharingOrders.Input,
+  ): Promise<ProfitSharing.CreateProfitSharingOrders.IOutput> {
+    const url = 'https://api.mch.weixin.qq.com/v3/profitsharing/orders';
+    // 请求参数
+    const _params = {
+      appid: this.appid,
+      ...params,
+    };
+
+    const serial_no = _params?.wx_serial_no;
+    delete _params.wx_serial_no;
+    const authorization = this.init('POST', url, _params);
+
+    return await this.postRequestV2(url, _params, authorization, { 'Wechatpay-Serial': serial_no || this.serial_no });
+  }
+  /**
+   * 查询分账结果API
+   */
+  public async query_profitsharing_orders(transaction_id: string, out_order_no: string) {
+    if (!transaction_id) throw new Error('缺少transaction_id');
+    if (!out_order_no) throw new Error('缺少out_order_no');
+    let url = `https://api.mch.weixin.qq.com/v3/profitsharing/orders/${out_order_no}`;
+    url = url + this.objectToQueryString({ transaction_id });
+    const authorization = this.init('GET', url);
+    return await this.getRequest(url, authorization);
+  }
+  //#endregion 分账
 }
 
 export = Pay;

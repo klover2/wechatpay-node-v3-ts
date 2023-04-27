@@ -157,6 +157,7 @@ try {
 |v2.0.6|修复发起商家转账零钱参数wx_serial_no(自定义参数，即http请求头Wechatpay-Serial的值)为可选参数|
 |v2.1.0|升级superagent依赖6.1.0到8.0.6|
 |v2.1.1|商家转账API支持场景参数|
+|v2.1.2|基础支付接口支持传appid|
 
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)
