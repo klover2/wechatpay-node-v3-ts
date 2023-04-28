@@ -131,6 +131,7 @@ try {
 |[查询退款](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_10.shtml)|[find_refunds](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)|
 |[签名验证](https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay4_1.shtml)|[verifySign](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/verifySign.md)|
 |[微信提现到零钱](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter4_3_1.shtml)|[batches_transfer](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/batches_transfer.md)|
+|[分账](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter8_1_1.shtml)|[create_profitsharing_orders](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/profitsharing.md)|
 
 
 
@@ -158,6 +159,7 @@ try {
 |v2.1.0|升级superagent依赖6.1.0到8.0.6|
 |v2.1.1|商家转账API支持场景参数|
 |v2.1.2|基础支付接口支持传appid|
+|v2.1.3|支持分账相关接口|
 
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)

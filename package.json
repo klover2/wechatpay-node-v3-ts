@@ -1,6 +1,6 @@
 {
   "name": "wechatpay-node-v3",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "微信支付文档v3",
   "keywords": [
     "node",

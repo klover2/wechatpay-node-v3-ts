@@ -22,15 +22,15 @@ import { BatchesTransfer, ProfitSharing } from './lib/interface-v2';
 import { Base } from './lib/base';
 
 class Pay extends Base {
-  private appid: string; //  直连商户申请的公众号或移动应用appid。
-  private mchid: string; // 商户号
-  private serial_no = ''; // 证书序列号
-  private publicKey?: Buffer; // 公钥
-  private privateKey?: Buffer; // 密钥
-  private authType = 'WECHATPAY2-SHA256-RSA2048'; // 认证类型，目前为WECHATPAY2-SHA256-RSA2048
+  protected appid: string; //  直连商户申请的公众号或移动应用appid。
+  protected mchid: string; // 商户号
+  protected serial_no = ''; // 证书序列号
+  protected publicKey?: Buffer; // 公钥
+  protected privateKey?: Buffer; // 密钥
+  protected authType = 'WECHATPAY2-SHA256-RSA2048'; // 认证类型，目前为WECHATPAY2-SHA256-RSA2048
 
-  private key?: string; // APIv3密钥
-  private static certificates: { [key in string]: string } = {}; // 微信平台证书 key 是 serialNo, value 是 publicKey
+  protected key?: string; // APIv3密钥
+  protected static certificates: { [key in string]: string } = {}; // 微信平台证书 key 是 serialNo, value 是 publicKey
   /**
    * 构造器
    * @param appid 直连商户申请的公众号或移动应用appid。
@@ -243,7 +243,7 @@ class Pay extends Base {
   // 时间戳
   // 随机字符串
   // 预支付交易会话ID
-  private sign(str: string) {
+  protected sign(str: string) {
     return this.sha256WithRsa(str);
   }
   // 获取序列号
@@ -325,7 +325,7 @@ class Pay extends Base {
   /**
    * 参数初始化
    */
-  private init(method: string, url: string, params?: Record<string, any>) {
+  protected init(method: string, url: string, params?: Record<string, any>) {
     const nonce_str = Math.random()
         .toString(36)
         .substr(2, 15),
@@ -756,6 +756,7 @@ class Pay extends Base {
    * 请求分账API
    * @param params
    * @returns
+   * @documentation 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter8_1_1.shtml
    */
   public async create_profitsharing_orders(
     params: ProfitSharing.CreateProfitSharingOrders.Input,
@@ -775,14 +776,121 @@ class Pay extends Base {
   }
   /**
    * 查询分账结果API
+   * @documentation 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter8_1_2.shtml
    */
-  public async query_profitsharing_orders(transaction_id: string, out_order_no: string) {
+  public async query_profitsharing_orders(transaction_id: string, out_order_no: string): Promise<ProfitSharing.CreateProfitSharingOrders.IOutput> {
     if (!transaction_id) throw new Error('缺少transaction_id');
     if (!out_order_no) throw new Error('缺少out_order_no');
     let url = `https://api.mch.weixin.qq.com/v3/profitsharing/orders/${out_order_no}`;
     url = url + this.objectToQueryString({ transaction_id });
     const authorization = this.init('GET', url);
-    return await this.getRequest(url, authorization);
+    return await this.getRequestV2(url, authorization);
+  }
+  /**
+   * 请求分账回退API
+   * @documentation 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter8_1_3.shtml
+   */
+  public async profitsharing_return_orders(
+    params: ProfitSharing.ProfitSharingReturnOrders.Input,
+  ): Promise<ProfitSharing.ProfitSharingReturnOrders.IOutput> {
+    const url = 'https://api.mch.weixin.qq.com/v3/profitsharing/return-orders';
+    // 请求参数
+    const _params = {
+      ...params,
+    };
+
+    const authorization = this.init('POST', url, _params);
+    return await this.postRequestV2(url, _params, authorization);
+  }
+  /**
+   * 查询分账回退结果API
+   * @documentation 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter8_1_4.shtml
+   */
+  public async query_profitsharing_return_orders(
+    out_return_no: string,
+    out_order_no: string,
+  ): Promise<ProfitSharing.ProfitSharingReturnOrders.IOutput> {
+    if (!out_return_no) throw new Error('缺少out_return_no');
+    if (!out_order_no) throw new Error('缺少out_order_no');
+    let url = `https://api.mch.weixin.qq.com/v3/profitsharing/return-orders/${out_return_no}`;
+    url = url + this.objectToQueryString({ out_order_no });
+    const authorization = this.init('GET', url);
+    return await this.getRequestV2(url, authorization);
+  }
+  /**
+   * 解冻剩余资金API
+   * @documentation 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter8_1_5.shtml
+   */
+  public async profitsharing_orders_unfreeze(
+    params: ProfitSharing.ProfitsharingOrdersUnfreeze.Input,
+  ): Promise<ProfitSharing.ProfitsharingOrdersUnfreeze.IOutput> {
+    const url = 'https://api.mch.weixin.qq.com/v3/profitsharing/orders/unfreeze';
+    // 请求参数
+    const _params = {
+      ...params,
+    };
+
+    const authorization = this.init('POST', url, _params);
+    return await this.postRequestV2(url, _params, authorization);
+  }
+  /**
+   * 查询剩余待分金额API
+   * @documentation 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter8_1_6.shtml
+   */
+  public async query_profitsharing_amounts(transaction_id: string): Promise<ProfitSharing.QueryProfitSharingAmounts.IOutput> {
+    if (!transaction_id) throw new Error('缺少transaction_id');
+    const url = `https://api.mch.weixin.qq.com/v3/profitsharing/transactions/${transaction_id}/amounts`;
+    const authorization = this.init('GET', url);
+    return await this.getRequestV2(url, authorization);
+  }
+  /**
+   * 添加分账接收方API
+   * @documentation https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter8_1_8.shtml
+   */
+  public async profitsharing_receivers_add(
+    params: ProfitSharing.ProfitSharingReceiversAdd.Input,
+  ): Promise<ProfitSharing.ProfitSharingReceiversAdd.IOutput> {
+    const url = 'https://api.mch.weixin.qq.com/v3/profitsharing/receivers/add';
+    // 请求参数
+    const _params = {
+      appid: this.appid,
+      ...params,
+    };
+
+    const serial_no = _params?.wx_serial_no;
+    delete _params.wx_serial_no;
+    const authorization = this.init('POST', url, _params);
+
+    return await this.postRequestV2(url, _params, authorization, { 'Wechatpay-Serial': serial_no || this.serial_no });
+  }
+  /**
+   * 删除分账接收方API
+   * @documentation https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter8_1_9.shtml
+   */
+  public async profitsharing_receivers_delete(
+    params: ProfitSharing.ProfitSharingReceiversDelete.Input,
+  ): Promise<ProfitSharing.ProfitSharingReceiversDelete.IOutput> {
+    const url = 'https://api.mch.weixin.qq.com/v3/profitsharing/receivers/delete';
+    // 请求参数
+    const _params = {
+      appid: this.appid,
+      ...params,
+    };
+
+    const authorization = this.init('POST', url, _params);
+
+    return await this.postRequestV2(url, _params, authorization);
+  }
+  /**
+   * 申请分账账单API
+   * @documentation https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter8_1_11.shtml
+   */
+  public async profitsharing_bills(bill_date: string, tar_type?: string): Promise<ProfitSharing.ProfitSharingBills.IOutput> {
+    if (!bill_date) throw new Error('缺少bill_date');
+    let url = `https://api.mch.weixin.qq.com/v3/profitsharing/bills`;
+    url = url + this.objectToQueryString({ bill_date, ...(tar_type && { tar_type }) });
+    const authorization = this.init('GET', url);
+    return await this.getRequestV2(url, authorization);
   }
   //#endregion 分账
 }

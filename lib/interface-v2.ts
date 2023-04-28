@@ -318,7 +318,7 @@ export declare namespace ProfitSharing {
       receivers: CreateProfitSharingOrdersReceivers[];
       /** 是否解冻剩余未分资金 */
       unfreeze_unsplit: boolean;
-      /** 当月敏感信息加密 必填 */
+      /** 当有敏感信息加密 必填 */
       wx_serial_no?: string;
     }
 
@@ -337,6 +337,146 @@ export declare namespace ProfitSharing {
 
     export interface IOutput extends Output {
       data?: ProfitSharingOrderDetailOutput;
+    }
+  }
+
+  /**
+   * 分账回退
+   */
+  export namespace ProfitSharingReturnOrders {
+    export interface Input {
+      /** 微信分账单号 */
+      order_id?: string;
+      /** 商户分账单号 */
+      out_order_no?: string;
+      /** 商户回退单号 */
+      out_return_no: string;
+      /** 回退商户号 */
+      return_mchid: string;
+      /** 回退金额 */
+      amount: number;
+      /** 回退描述 */
+      description: string;
+    }
+
+    export interface IOutput extends Output {
+      data?: IDetail;
+    }
+    export interface IDetail {
+      /** 微信分账单号 */
+      order_id: string;
+      /** 商户分账单号 */
+      out_order_no: string;
+      /** 商户回退单号 */
+      out_return_no: string;
+      /** 微信回退单号 */
+      return_id: string;
+      /** 回退商户号 */
+      return_mchid: string;
+      /** 回退金额 */
+      amount: number;
+      /** 回退描述 */
+      description: string;
+      /** 回退结果 */
+      result: string;
+      /** 失败原因 */
+      fail_reason: string;
+      /** 创建时间 */
+      create_time: string;
+      /** 完成时间 */
+      finish_time: string;
+    }
+  }
+
+  /**
+   * 解冻剩余资金
+   */
+  export namespace ProfitsharingOrdersUnfreeze {
+    export interface Input {
+      /** 微信订单号 */
+      transaction_id: string;
+      /** 商户分账单号 */
+      out_order_no: string;
+      /** 分账描述 */
+      description: string;
+    }
+
+    export type IOutput = ProfitSharing.CreateProfitSharingOrders.IOutput;
+  }
+
+  export namespace QueryProfitSharingAmounts {
+    export interface IOutput extends Output {
+      data?: {
+        transaction_id: string;
+        unsplit_amount: number;
+      };
+    }
+  }
+
+  export namespace ProfitSharingReceiversAdd {
+    export interface Input {
+      /** 应用ID */
+      appid?: string;
+      /** 分账接收方类型 */
+      type: string;
+      /** 分账接收方账号 */
+      account: string;
+      /** 分账个人接收方姓名 */
+      name?: string;
+      /** 与分账方的关系类型 */
+      relation_type: string;
+      /** 自定义的分账关系 */
+      custom_relation?: string;
+      /** 当有敏感信息加密 必填 */
+      wx_serial_no?: string;
+    }
+
+    export interface IOutput extends Output {
+      data?: {
+        /** 分账接收方类型 */
+        type: string;
+        /** 分账接收方账号 */
+        account: number;
+        /** 分账个人接收方姓名 */
+        name?: string;
+        /** 与分账方的关系类型 */
+        relation_type: string;
+        /** 自定义的分账关系 */
+        custom_relation?: string;
+      };
+    }
+  }
+
+  export namespace ProfitSharingReceiversDelete {
+    export interface Input {
+      /** 应用ID */
+      appid?: string;
+      /** 分账接收方类型 */
+      type: string;
+      /** 分账接收方账号 */
+      account: string;
+    }
+
+    export interface IOutput extends Output {
+      data?: {
+        /** 分账接收方类型 */
+        type: string;
+        /** 分账接收方账号 */
+        account: string;
+      };
+    }
+  }
+
+  export namespace ProfitSharingBills {
+    export interface IOutput extends Output {
+      data?: {
+        /** 哈希类型 */
+        hash_type: string;
+        /** 哈希值 */
+        hash_value: string;
+        /** 账单下载地址 */
+        download_url: string;
+      };
     }
   }
 }
