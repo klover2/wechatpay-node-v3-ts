@@ -46,7 +46,8 @@ export class Base {
       const err = JSON.parse(JSON.stringify(error));
       return {
         status: err.status,
-        ...(err.response.text && JSON.parse(err.response.text)),
+        errRaw: err,
+        ...(err?.response?.text && JSON.parse(err?.response?.text)),
       };
     }
   }
@@ -76,7 +77,8 @@ export class Base {
       const err = JSON.parse(JSON.stringify(error));
       return {
         status: err.status as number,
-        error: err.response.text && JSON.parse(err.response.text),
+        errRaw: err,
+        error: err?.response?.text,
       };
     }
   }
@@ -128,7 +130,8 @@ export class Base {
       const err = JSON.parse(JSON.stringify(error));
       return {
         status: err.status,
-        ...(err.response.text && JSON.parse(err.response.text)),
+        errRaw: err,
+        ...(err?.response?.text && JSON.parse(err?.response?.text)),
       };
     }
   }
@@ -180,7 +183,8 @@ export class Base {
       const err = JSON.parse(JSON.stringify(error));
       return {
         status: err.status,
-        error: err.response.text && JSON.parse(err.response.text),
+        errRaw: err,
+        error: err?.response?.text,
       };
     }
   }

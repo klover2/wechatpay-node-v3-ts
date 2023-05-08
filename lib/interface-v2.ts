@@ -4,6 +4,7 @@
 export interface Output {
   status: number;
   error?: any;
+  errRaw?: any;
   data?: any;
 }
 
