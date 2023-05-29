@@ -423,8 +423,8 @@ class Pay extends Base {
     if (result.status === 200 && result.prepay_id) {
       const data = {
         status: result.status,
-        appid: this.appid,
-        partnerid: this.mchid,
+        appid: _params.appid,
+        partnerid: _params.mchid,
         package: 'Sign=WXPay',
         timestamp: parseInt(+new Date() / 1000 + '').toString(),
         noncestr: Math.random()
@@ -458,8 +458,8 @@ class Pay extends Base {
     if (result.status === 200 && result.prepay_id) {
       const data = {
         status: result.status,
-        appid: this.appid,
-        partnerid: this.mchid,
+        appid: _params.combine_appid,
+        partnerid: _params.combine_mchid,
         package: 'Sign=WXPay',
         timestamp: parseInt(+new Date() / 1000 + '').toString(),
         noncestr: Math.random()
@@ -493,7 +493,7 @@ class Pay extends Base {
     if (result.status === 200 && result.prepay_id) {
       const data = {
         status: result.status,
-        appId: this.appid,
+        appId: _params.appid,
         timeStamp: parseInt(+new Date() / 1000 + '').toString(),
         nonceStr: Math.random()
           .toString(36)
@@ -527,7 +527,7 @@ class Pay extends Base {
     if (result.status === 200 && result.prepay_id) {
       const data = {
         status: result.status,
-        appId: this.appid,
+        appId: _params.combine_appid,
         timeStamp: parseInt(+new Date() / 1000 + '').toString(),
         nonceStr: Math.random()
           .toString(36)
