@@ -162,6 +162,7 @@ try {
 |v2.1.3|支持分账相关接口|
 |v2.1.4|修复错误原因存在空值bug|
 |v2.1.5|修复动态 appid 签名错误|
+|v2.1.6|Native下单API支持support_fapiao字段|
 
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)

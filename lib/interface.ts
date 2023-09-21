@@ -88,9 +88,11 @@ export interface Inative {
   attach?: string;
   notify_url: string;
   goods_tag?: string;
+  support_fapiao?: boolean;
   amount: Iamount;
   detail?: Idetail;
   scene_info?: IsceneInfoNative;
+  settle_info?: { profit_sharing?: boolean };
 }
 export interface Ijsapi {
   appid?: string;
