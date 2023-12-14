@@ -18,7 +18,7 @@ import {
   ICertificates,
 } from './lib/interface';
 import { IcombineH5, IcombineNative, IcombineApp, IcombineJsapi, IcloseSubOrders } from './lib/combine_interface';
-import { BatchesTransfer, ProfitSharing } from './lib/interface-v2';
+import { BatchesTransfer, FindRefunds, ProfitSharing, Refunds } from './lib/interface-v2';
 import { Base } from './lib/base';
 
 class Pay extends Base {
@@ -660,7 +660,7 @@ class Pay extends Base {
    * 申请退款
    * @param params 请求参数 路径 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_9.shtml
    */
-  public async refunds(params: Irefunds1 | Irefunds2): Promise<Record<string, any>> {
+  public async refunds(params: Irefunds1 | Irefunds2): Promise<Refunds.IOutput> {
     const url = 'https://api.mch.weixin.qq.com/v3/refund/domestic/refunds';
     // 请求参数
     const _params = {
@@ -669,18 +669,18 @@ class Pay extends Base {
 
     const authorization = this.init('POST', url, _params);
 
-    return await this.postRequest(url, _params, authorization);
+    return await this.postRequestV2(url, _params, authorization);
   }
   /**
    * 查询单笔退款
    * @documentation 请求参数 路径 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_10.shtml
    */
-  public async find_refunds(out_refund_no: string): Promise<Record<string, any>> {
+  public async find_refunds(out_refund_no: string): Promise<FindRefunds.IOutput> {
     if (!out_refund_no) throw new Error('缺少out_refund_no');
     const url = `https://api.mch.weixin.qq.com/v3/refund/domestic/refunds/${out_refund_no}`;
 
     const authorization = this.init('GET', url);
-    return await this.getRequest(url, authorization);
+    return await this.getRequestV2(url, authorization);
   }
   //#endregion 支付相关接口
   //#region 商家转账到零钱

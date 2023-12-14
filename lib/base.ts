@@ -153,31 +153,18 @@ export class Base {
         });
 
       let data: any = {};
-      switch (result.type) {
-        case 'application/json':
-          data = {
-            status: result.status,
-            data: result.body,
-          };
-          break;
-        case 'text/plain':
-          data = {
-            status: result.status,
-            data: result.text,
-          };
-          break;
-        case 'application/x-gzip':
-          data = {
-            status: result.status,
-            data: result.body,
-          };
-          break;
-        default:
-          data = {
-            status: result.status,
-            data: result.body,
-          };
+      if (result.type === 'text/plain') {
+        data = {
+          status: result.status,
+          data: result.text,
+        };
+      } else {
+        data = {
+          status: result.status,
+          data: result.body,
+        };
       }
+
       return data;
     } catch (error) {
       const err = JSON.parse(JSON.stringify(error));

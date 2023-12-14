@@ -481,3 +481,95 @@ export declare namespace ProfitSharing {
     }
   }
 }
+
+export declare namespace Refunds {
+  export interface DataOutput {
+    refund_id: string;
+    out_refund_no: string;
+    transaction_id: string;
+    out_trade_no: string;
+    channel: string;
+    user_received_account: string;
+    success_time: string;
+    create_time: string;
+    status: string;
+    funds_account: string;
+    amount: {
+      total: number;
+      refund: number;
+      from: { account: string; amount: number }[];
+      payer_total: number;
+      payer_refund: number;
+      settlement_refund: number;
+      settlement_total: number;
+      discount_refund: number;
+      currency: string;
+      refund_fee: number;
+    };
+    promotion_detail: {
+      promotion_id: string;
+      scope: string;
+      type: string;
+      amount: number;
+      refund_amount: number;
+      goods_detail: {
+        merchant_goods_id: string;
+        wechatpay_goods_id: string;
+        goods_name: string;
+        unit_price: number;
+        refund_amount: number;
+        refund_quantity: number;
+      }[];
+    }[];
+  }
+
+  export interface IOutput extends Output {
+    data?: DataOutput;
+  }
+}
+
+export declare namespace FindRefunds {
+  export interface DataOutput {
+    refund_id: string;
+    out_refund_no: string;
+    transaction_id: string;
+    out_trade_no: string;
+    channel: string;
+    user_received_account: string;
+    success_time: string;
+    create_time: string;
+    status: string;
+    funds_account: string;
+    amount: {
+      total: number;
+      refund: number;
+      from: { account: string; amount: number }[];
+      payer_total: number;
+      payer_refund: number;
+      settlement_refund: number;
+      settlement_total: number;
+      discount_refund: number;
+      currency: string;
+      refund_fee: number;
+    };
+    promotion_detail: {
+      promotion_id: string;
+      scope: string;
+      type: string;
+      amount: number;
+      refund_amount: number;
+      goods_detail: {
+        merchant_goods_id: string;
+        wechatpay_goods_id: string;
+        goods_name: string;
+        unit_price: number;
+        refund_amount: number;
+        refund_quantity: number;
+      }[];
+    }[];
+  }
+
+  export interface IOutput extends Output {
+    data?: DataOutput;
+  }
+}
