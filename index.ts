@@ -302,15 +302,15 @@ class Pay extends Base {
    * @param key  APIv3密钥
    */
   public decipher_gcm<T extends any>(ciphertext: string, associated_data: string, nonce: string, key?: string): T {
-    if (key) this.key = key;
-    if (!this.key) throw new Error('缺少key');
+    if (!key) key = this.key;
+    if (!key) throw new Error('缺少key');
 
     const _ciphertext = Buffer.from(ciphertext, 'base64');
 
     // 解密 ciphertext字符  AEAD_AES_256_GCM算法
     const authTag: any = _ciphertext.slice(_ciphertext.length - 16);
     const data = _ciphertext.slice(0, _ciphertext.length - 16);
-    const decipher = crypto.createDecipheriv('aes-256-gcm', this.key, nonce);
+    const decipher = crypto.createDecipheriv('aes-256-gcm', key, nonce);
     decipher.setAuthTag(authTag);
     decipher.setAAD(Buffer.from(associated_data));
     const decoded = decipher.update(data, undefined, 'utf8');
