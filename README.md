@@ -24,7 +24,7 @@
 由于官方文档只支持java和php,所以我在这里使用ts简单的封装了一个版本,支持在js或者ts中使用,后续会更加完善这个npm包，谢谢。
 
 ## 使用
-`yarn add wechatpay-node-v3`(也可以用npm)
+`yarn add wechatpay-node-v3@2.1.8`(也可以用npm,请加上版本号，使用正式版本)
 
 ```bash
 import WxPay from 'wechatpay-node-v3'; // 支持使用require
@@ -86,6 +86,16 @@ try {
 ```
 如果你使用的是nest框架，请结合`nest-wechatpay-node-v3`一起使用。
 
+## 使用自定义 http 请求
+> import { IPayRequest, Output } from 'wechatpay-node-v3/dist/define';
+
+自己实现 `IPayRequest` 接口，使用如下方法注入
+
+```ts
+pay.createHttp(...);
+```
+
+
 ## WxPay 介绍
 `import WxPay from 'wechatpay-node-v3';` 或者 `const WxPay = require('wechatpay-node-v3')`
 
@@ -118,7 +128,7 @@ try {
 | [关闭订单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_1.shtml) |[close](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/close.md)  |
 | [申请交易账单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_6.shtml) |[tradebill](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/tradebill.md)  |
 | [申请资金账单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_7.shtml) |[fundflowbill](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/fundflowbill.md)  |
-| [下载账单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_8.shtml) |[downloadbill](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/downloadbill.md)  |
+| [下载账单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_8.shtml) |[downloadBill](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/downloadbill.md)  |
 | [回调解密](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_5.shtml) |[decipher_gcm](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)  |
 |[合单h5支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_2.shtml)|[combine_transactions_h5](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
 |[合单native支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_5.shtml)|[combine_transactions_native](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|

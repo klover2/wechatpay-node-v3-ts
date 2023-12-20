@@ -2,9 +2,13 @@
  * 统一返回格式
  */
 export interface Output {
+  /** http 状态 */
   status: number;
+  /** 报错时返回的 text */
   error?: any;
+  /** 原错误信息 */
   errRaw?: any;
+  /** body 返回参数 */
   data?: any;
 }
 

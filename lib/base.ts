@@ -3,7 +3,6 @@ import { Output } from './interface-v2';
 
 export class Base {
   protected userAgent = '127.0.0.1'; // User-Agent
-  constructor() {}
 
   /**
    * get 请求参数处理
@@ -22,9 +21,23 @@ export class Base {
     return str || '';
   }
   /**
+   * 获取请求头
+   * @param authorization
+   */
+  protected getHeaders(authorization: string, headers = {}) {
+    return {
+      ...headers,
+      Accept: 'application/json',
+      'User-Agent': this.userAgent,
+      Authorization: authorization,
+      'Accept-Encoding': 'gzip',
+    };
+  }
+  /**
    * post 请求
    * @param url  请求接口
    * @param params 请求参数
+   * @deprecated 弃用
    */
   protected async postRequest(url: string, params: Record<string, any>, authorization: string): Promise<Record<string, any>> {
     try {
@@ -55,6 +68,7 @@ export class Base {
    * post 请求 V2
    * @param url  请求接口
    * @param params 请求参数
+   * @deprecated 弃用
    */
   protected async postRequestV2(url: string, params: Record<string, any>, authorization: string, headers = {}): Promise<Output> {
     try {
@@ -86,6 +100,7 @@ export class Base {
    * get 请求
    * @param url  请求接口
    * @param query 请求参数
+   * @deprecated 弃用
    */
   protected async getRequest(url: string, authorization: string, query: Record<string, any> = {}): Promise<Record<string, any>> {
     try {
@@ -139,6 +154,7 @@ export class Base {
    * get 请求 v2
    * @param url  请求接口
    * @param query 请求参数
+   * @deprecated 弃用
    */
   protected async getRequestV2(url: string, authorization: string, query: Record<string, any> = {}): Promise<Output> {
     try {
