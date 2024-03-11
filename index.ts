@@ -328,7 +328,6 @@ class Pay extends Base {
     decipher.setAuthTag(authTag);
     decipher.setAAD(Buffer.from(associated_data));
     const decoded = decipher.update(data, undefined, 'utf8');
-    decipher.final();
 
     try {
       return JSON.parse(decoded);
