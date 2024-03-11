@@ -1,7 +1,6 @@
 import { Output } from './interface-v2';
 
 export interface IPayRequest {
-  name: string;
   /**
    * post 请求
    * @param url url

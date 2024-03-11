@@ -175,6 +175,7 @@ pay.createHttp(...);
 |v2.1.6|Native下单API支持support_fapiao字段|
 |v2.1.7|修复退款接口refunds和find_refunds返回结果中的http status会被业务status覆盖问题|
 |v2.1.8|修复回调签名key错误|
+|v2.2.0|修复回调解密报Unsupported state or unable to authenticate data |
 
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)
