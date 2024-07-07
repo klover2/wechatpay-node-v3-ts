@@ -40,14 +40,14 @@ class Pay extends Base {
    * @param mchid 商户号
    * @param publicKey 公钥
    * @param privateKey 密钥
-   * @param optipns 可选参数 object 包括下面参数
+   * @param options 可选参数 object 包括下面参数
    *
    * @param serial_no  证书序列号
    * @param authType 可选参数 认证类型，目前为WECHATPAY2-SHA256-RSA2048
    * @param userAgent 可选参数 User-Agent
    * @param key 可选参数 APIv3密钥
    */
-  public constructor(appid: string, mchid: string, publicKey: Buffer, privateKey: Buffer, optipns?: Ioptions);
+  public constructor(appid: string, mchid: string, publicKey: Buffer, privateKey: Buffer, options?: Ioptions);
   /**
    * 构造器
    * @param obj object类型 包括下面参数
@@ -62,7 +62,7 @@ class Pay extends Base {
    * @param key 可选参数 APIv3密钥
    */
   public constructor(obj: Ipay);
-  public constructor(arg1: Ipay | string, mchid?: string, publicKey?: Buffer, privateKey?: Buffer, optipns?: Ioptions) {
+  public constructor(arg1: Ipay | string, mchid?: string, publicKey?: Buffer, privateKey?: Buffer, options?: Ioptions) {
     super();
 
     if (arg1 instanceof Object) {
@@ -78,7 +78,7 @@ class Pay extends Base {
       this.userAgent = arg1.userAgent || '127.0.0.1';
       this.key = arg1.key;
     } else {
-      const _optipns = optipns || {};
+      const _optipns = options || {};
       this.appid = arg1;
       this.mchid = mchid || '';
       this.publicKey = publicKey;
@@ -107,7 +107,7 @@ class Pay extends Base {
    */
   public async get_certificates(apiSecret: string): Promise<ICertificates[]> {
     const url = 'https://api.mch.weixin.qq.com/v3/certificates';
-    const authorization = this.init('GET', url);
+    const authorization = this.buildAuthorization('GET', url);
     const headers = this.getHeaders(authorization);
 
     const result = await this.httpService.get(url, headers);
@@ -137,7 +137,7 @@ class Pay extends Base {
    */
   private async fetchCertificates(apiSecret?: string) {
     const url = 'https://api.mch.weixin.qq.com/v3/certificates';
-    const authorization = this.init('GET', url);
+    const authorization = this.buildAuthorization('GET', url);
     const headers = this.getHeaders(authorization, { 'Content-Type': 'application/json' });
     const result = await this.httpService.get(url, headers);
 
@@ -338,7 +338,7 @@ class Pay extends Base {
   /**
    * 参数初始化
    */
-  protected init(method: string, url: string, params?: Record<string, any>) {
+  protected buildAuthorization(method: string, url: string, params?: Record<string, any>) {
     const nonce_str = Math.random()
         .toString(36)
         .substr(2, 15),
@@ -362,7 +362,7 @@ class Pay extends Base {
     };
     const url = 'https://api.mch.weixin.qq.com/v3/pay/transactions/h5';
 
-    const authorization = this.init('POST', url, _params);
+    const authorization = this.buildAuthorization('POST', url, _params);
     const headers = this.getHeaders(authorization, { 'Content-Type': 'application/json' });
     return await this.httpService.post(url, _params, headers);
   }
@@ -379,7 +379,7 @@ class Pay extends Base {
     };
     const url = 'https://api.mch.weixin.qq.com/v3/combine-transactions/h5';
 
-    const authorization = this.init('POST', url, _params);
+    const authorization = this.buildAuthorization('POST', url, _params);
 
     const headers = this.getHeaders(authorization, { 'Content-Type': 'application/json' });
 
@@ -398,7 +398,7 @@ class Pay extends Base {
     };
     const url = 'https://api.mch.weixin.qq.com/v3/pay/transactions/native';
 
-    const authorization = this.init('POST', url, _params);
+    const authorization = this.buildAuthorization('POST', url, _params);
     const headers = this.getHeaders(authorization, { 'Content-Type': 'application/json' });
     return await this.httpService.post(url, _params, headers);
   }
@@ -415,7 +415,7 @@ class Pay extends Base {
     };
     const url = 'https://api.mch.weixin.qq.com/v3/combine-transactions/native';
 
-    const authorization = this.init('POST', url, _params);
+    const authorization = this.buildAuthorization('POST', url, _params);
     const headers = this.getHeaders(authorization, { 'Content-Type': 'application/json' });
     return await this.httpService.post(url, _params, headers);
   }
@@ -432,7 +432,7 @@ class Pay extends Base {
     };
     const url = 'https://api.mch.weixin.qq.com/v3/pay/transactions/app';
 
-    const authorization = this.init('POST', url, _params);
+    const authorization = this.buildAuthorization('POST', url, _params);
     const headers = this.getHeaders(authorization, { 'Content-Type': 'application/json' });
     const result = await this.httpService.post(url, _params, headers);
     if (result.status === 200 && result.data.prepay_id) {
@@ -466,7 +466,7 @@ class Pay extends Base {
     };
     const url = 'https://api.mch.weixin.qq.com/v3/combine-transactions/app';
 
-    const authorization = this.init('POST', url, _params);
+    const authorization = this.buildAuthorization('POST', url, _params);
     const headers = this.getHeaders(authorization, { 'Content-Type': 'application/json' });
     const result = await this.httpService.post(url, _params, headers);
     if (result.status === 200 && result.data.prepay_id) {
@@ -500,7 +500,7 @@ class Pay extends Base {
     };
     const url = 'https://api.mch.weixin.qq.com/v3/pay/transactions/jsapi';
 
-    const authorization = this.init('POST', url, _params);
+    const authorization = this.buildAuthorization('POST', url, _params);
     const headers = this.getHeaders(authorization, { 'Content-Type': 'application/json' });
     const result = await this.httpService.post(url, _params, headers);
     if (result.status === 200 && result.data.prepay_id) {
@@ -533,7 +533,7 @@ class Pay extends Base {
     };
     const url = 'https://api.mch.weixin.qq.com/v3/combine-transactions/jsapi';
 
-    const authorization = this.init('POST', url, _params);
+    const authorization = this.buildAuthorization('POST', url, _params);
     const headers = this.getHeaders(authorization, { 'Content-Type': 'application/json' });
     const result = await this.httpService.post(url, _params, headers);
     if (result.status === 200 && result.data.prepay_id) {
@@ -567,7 +567,7 @@ class Pay extends Base {
       throw new Error('缺少transaction_id或者out_trade_no');
     }
 
-    const authorization = this.init('GET', url);
+    const authorization = this.buildAuthorization('GET', url);
     const headers = this.getHeaders(authorization);
     return await this.httpService.get(url, headers);
   }
@@ -579,7 +579,7 @@ class Pay extends Base {
     if (!combine_out_trade_no) throw new Error('缺少combine_out_trade_no');
     const url = `https://api.mch.weixin.qq.com/v3/combine-transactions/out-trade-no/${combine_out_trade_no}`;
 
-    const authorization = this.init('GET', url);
+    const authorization = this.buildAuthorization('GET', url);
     const headers = this.getHeaders(authorization);
     return await this.httpService.get(url, headers);
   }
@@ -595,7 +595,7 @@ class Pay extends Base {
       mchid: this.mchid,
     };
     const url = `https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/${out_trade_no}/close`;
-    const authorization = this.init('POST', url, _params);
+    const authorization = this.buildAuthorization('POST', url, _params);
     const headers = this.getHeaders(authorization, { 'Content-Type': 'application/json' });
     return await this.httpService.post(url, _params, headers);
   }
@@ -613,7 +613,7 @@ class Pay extends Base {
       sub_orders,
     };
     const url = `https://api.mch.weixin.qq.com/v3/combine-transactions/out-trade-no/${combine_out_trade_no}/close`;
-    const authorization = this.init('POST', url, _params);
+    const authorization = this.buildAuthorization('POST', url, _params);
     const headers = this.getHeaders(authorization, { 'Content-Type': 'application/json' });
     return await this.httpService.post(url, _params, headers);
   }
@@ -636,7 +636,7 @@ class Pay extends Base {
       })
       .join('&');
     url = url + `?${querystring}`;
-    const authorization = this.init('GET', url);
+    const authorization = this.buildAuthorization('GET', url);
     const headers = this.getHeaders(authorization);
     return await this.httpService.get(url, headers);
   }
@@ -659,7 +659,7 @@ class Pay extends Base {
       })
       .join('&');
     url = url + `?${querystring}`;
-    const authorization = this.init('GET', url);
+    const authorization = this.buildAuthorization('GET', url);
     const headers = this.getHeaders(authorization);
     return await this.httpService.get(url, headers);
   }
@@ -668,7 +668,7 @@ class Pay extends Base {
    * @param download_url 请求参数 路径 参数介绍 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_8.shtml
    */
   public async downloadBill(download_url: string) {
-    const authorization = this.init('GET', download_url);
+    const authorization = this.buildAuthorization('GET', download_url);
     const headers = this.getHeaders(authorization);
     return await this.httpService.get(download_url, headers);
   }
@@ -683,7 +683,7 @@ class Pay extends Base {
       ...params,
     };
 
-    const authorization = this.init('POST', url, _params);
+    const authorization = this.buildAuthorization('POST', url, _params);
     const headers = this.getHeaders(authorization, { 'Content-Type': 'application/json' });
     return await this.httpService.post(url, _params, headers);
   }
@@ -695,7 +695,7 @@ class Pay extends Base {
     if (!out_refund_no) throw new Error('缺少out_refund_no');
     const url = `https://api.mch.weixin.qq.com/v3/refund/domestic/refunds/${out_refund_no}`;
 
-    const authorization = this.init('GET', url);
+    const authorization = this.buildAuthorization('GET', url);
     const headers = this.getHeaders(authorization);
     return await this.httpService.get(url, headers);
   }
@@ -715,7 +715,7 @@ class Pay extends Base {
 
     const serial_no = _params?.wx_serial_no;
     delete _params.wx_serial_no;
-    const authorization = this.init('POST', url, _params);
+    const authorization = this.buildAuthorization('POST', url, _params);
 
     const headers = this.getHeaders(authorization, { 'Wechatpay-Serial': serial_no || this.serial_no, 'Content-Type': 'application/json' });
     return await this.httpService.post(url, _params, headers);
@@ -729,7 +729,7 @@ class Pay extends Base {
   ): Promise<BatchesTransfer.QueryBatchesTransferByWx.IOutput> {
     const baseUrl = `https://api.mch.weixin.qq.com/v3/transfer/batches/batch-id/${params.batch_id}`;
     const url = baseUrl + this.objectToQueryString(params, ['batch_id']);
-    const authorization = this.init('GET', url);
+    const authorization = this.buildAuthorization('GET', url);
     const headers = this.getHeaders(authorization);
     return await this.httpService.get(url, headers);
   }
@@ -742,7 +742,7 @@ class Pay extends Base {
   ): Promise<BatchesTransfer.QueryBatchesTransferDetailByWx.IOutput> {
     const baseUrl = `https://api.mch.weixin.qq.com/v3/transfer/batches/batch-id/${params.batch_id}/details/detail-id/${params.detail_id}`;
     const url = baseUrl + this.objectToQueryString(params, ['batch_id', 'detail_id']);
-    const authorization = this.init('GET', url);
+    const authorization = this.buildAuthorization('GET', url);
     const headers = this.getHeaders(authorization);
     return await this.httpService.get(url, headers);
   }
@@ -755,7 +755,7 @@ class Pay extends Base {
   ): Promise<BatchesTransfer.QueryBatchesTransferList.IOutput> {
     const baseUrl = `https://api.mch.weixin.qq.com/v3/transfer/batches/out-batch-no/${params.out_batch_no}`;
     const url = baseUrl + this.objectToQueryString(params, ['out_batch_no']);
-    const authorization = this.init('GET', url);
+    const authorization = this.buildAuthorization('GET', url);
     const headers = this.getHeaders(authorization);
     return await this.httpService.get(url, headers);
   }
@@ -768,7 +768,7 @@ class Pay extends Base {
   ): Promise<BatchesTransfer.QueryBatchesTransferDetail.IOutput> {
     const baseUrl = `https://api.mch.weixin.qq.com/v3/transfer/batches/out-batch-no/${params.out_batch_no}/details/out-detail-no/${params.out_detail_no}`;
     const url = baseUrl + this.objectToQueryString(params, ['out_batch_no', 'out_detail_no']);
-    const authorization = this.init('GET', url);
+    const authorization = this.buildAuthorization('GET', url);
     const headers = this.getHeaders(authorization);
     return await this.httpService.get(url, headers);
   }
@@ -792,7 +792,7 @@ class Pay extends Base {
 
     const serial_no = _params?.wx_serial_no;
     delete _params.wx_serial_no;
-    const authorization = this.init('POST', url, _params);
+    const authorization = this.buildAuthorization('POST', url, _params);
 
     const headers = this.getHeaders(authorization, { 'Wechatpay-Serial': serial_no || this.serial_no, 'Content-Type': 'application/json' });
     return await this.httpService.post(url, _params, headers);
@@ -806,7 +806,7 @@ class Pay extends Base {
     if (!out_order_no) throw new Error('缺少out_order_no');
     let url = `https://api.mch.weixin.qq.com/v3/profitsharing/orders/${out_order_no}`;
     url = url + this.objectToQueryString({ transaction_id });
-    const authorization = this.init('GET', url);
+    const authorization = this.buildAuthorization('GET', url);
     const headers = this.getHeaders(authorization);
     return await this.httpService.get(url, headers);
   }
@@ -823,7 +823,7 @@ class Pay extends Base {
       ...params,
     };
 
-    const authorization = this.init('POST', url, _params);
+    const authorization = this.buildAuthorization('POST', url, _params);
     const headers = this.getHeaders(authorization, { 'Content-Type': 'application/json' });
     return await this.httpService.post(url, _params, headers);
   }
@@ -839,7 +839,7 @@ class Pay extends Base {
     if (!out_order_no) throw new Error('缺少out_order_no');
     let url = `https://api.mch.weixin.qq.com/v3/profitsharing/return-orders/${out_return_no}`;
     url = url + this.objectToQueryString({ out_order_no });
-    const authorization = this.init('GET', url);
+    const authorization = this.buildAuthorization('GET', url);
     const headers = this.getHeaders(authorization);
     return await this.httpService.get(url, headers);
   }
@@ -856,7 +856,7 @@ class Pay extends Base {
       ...params,
     };
 
-    const authorization = this.init('POST', url, _params);
+    const authorization = this.buildAuthorization('POST', url, _params);
     const headers = this.getHeaders(authorization, { 'Content-Type': 'application/json' });
     return await this.httpService.post(url, _params, headers);
   }
@@ -867,7 +867,7 @@ class Pay extends Base {
   public async query_profitsharing_amounts(transaction_id: string): Promise<ProfitSharing.QueryProfitSharingAmounts.IOutput> {
     if (!transaction_id) throw new Error('缺少transaction_id');
     const url = `https://api.mch.weixin.qq.com/v3/profitsharing/transactions/${transaction_id}/amounts`;
-    const authorization = this.init('GET', url);
+    const authorization = this.buildAuthorization('GET', url);
     const headers = this.getHeaders(authorization);
     return await this.httpService.get(url, headers);
   }
@@ -887,7 +887,7 @@ class Pay extends Base {
 
     const serial_no = _params?.wx_serial_no;
     delete _params.wx_serial_no;
-    const authorization = this.init('POST', url, _params);
+    const authorization = this.buildAuthorization('POST', url, _params);
 
     const headers = this.getHeaders(authorization, { 'Wechatpay-Serial': serial_no || this.serial_no, 'Content-Type': 'application/json' });
     return await this.httpService.post(url, _params, headers);
@@ -906,7 +906,7 @@ class Pay extends Base {
       ...params,
     };
 
-    const authorization = this.init('POST', url, _params);
+    const authorization = this.buildAuthorization('POST', url, _params);
 
     const headers = this.getHeaders(authorization, { 'Content-Type': 'application/json' });
     return await this.httpService.post(url, _params, headers);
@@ -919,7 +919,7 @@ class Pay extends Base {
     if (!bill_date) throw new Error('缺少bill_date');
     let url = `https://api.mch.weixin.qq.com/v3/profitsharing/bills`;
     url = url + this.objectToQueryString({ bill_date, ...(tar_type && { tar_type }) });
-    const authorization = this.init('GET', url);
+    const authorization = this.buildAuthorization('GET', url);
     const headers = this.getHeaders(authorization);
     return await this.httpService.get(url, headers);
   }
