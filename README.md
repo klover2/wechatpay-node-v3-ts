@@ -31,11 +31,15 @@ import WxPay from 'wechatpay-node-v3'; // 支持使用require
 import fs from 'fs';
 import request from 'superagent';
 
+
+
 const pay = new WxPay({
   appid: '直连商户申请的公众号或移动应用appid',
   mchid: '商户号',
   publicKey: fs.readFileSync('./apiclient_cert.pem'), // 公钥
   privateKey: fs.readFileSync('./apiclient_key.pem'), // 秘钥
+  wxPayPublicKey: fs.readFileSync('./pub_key.pem'), // 微信支付公钥证书
+  wxPayPublicId： 'PUB_KEY_ID_0000000000000024101100397200000006', // 微信支付公钥证书id
 });
 
 # 这里以h5支付为例
@@ -110,6 +114,8 @@ pay.createHttp(...);
 |authType|认证类型，目前为WECHATPAY2-SHA256-RSA2048|否|
 |userAgent|自定义User-Agent|否|
 |key|APIv3密钥|否 有验证回调必须|
+|wxPayPublicKey|微信支付公钥证书|否 新注册商户或平台证书切换微信支付公钥必填|
+|wxPayPublicId|微信支付公钥证书id|否 新注册商户或平台证书切换微信支付公钥必填|
 
 ## 注意
 1. serial_no是证书序列号 请在命令窗口使用 `openssl x509 -in apiclient_cert.pem -noout -serial` 获取
@@ -177,6 +183,7 @@ pay.createHttp(...);
 |v2.1.8|修复回调签名key错误|
 |v2.2.0|修复回调解密报Unsupported state or unable to authenticate data |
 |v2.2.1|上传图片 |
+|v2.2.2|增加微信支付公钥回调签名验证|
 
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)

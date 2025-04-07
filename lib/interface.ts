@@ -55,6 +55,8 @@ export interface Ioptions {
   authType?: string;
   key?: string;
   serial_no?: string;
+  wxPayPublicKey?: Buffer; // 支付平台公钥
+  wxPayPublicId?: string; // 支付平台密钥
 }
 export interface Ipay {
   appid: string; //  直连商户申请的公众号或移动应用appid。
@@ -65,6 +67,8 @@ export interface Ipay {
   authType?: string; // 认证类型，目前为WECHATPAY2-SHA256-RSA2048
   userAgent?: string;
   key?: string;
+  wxPayPublicKey?: Buffer; // 支付平台公钥
+  wxPayPublicId?: string; // 支付平台密钥
 }
 export interface Ih5 {
   appid?: string;
