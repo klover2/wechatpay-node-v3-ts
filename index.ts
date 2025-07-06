@@ -135,7 +135,7 @@ class Pay extends Base {
    * @param apiSecret APIv3密钥
    * https://pay.weixin.qq.com/wiki/doc/apiv3/apis/wechatpay5_1.shtml
    */
-  private async fetchCertificates(apiSecret?: string) {
+  private async fetchCertificates(apiSecret = this.key) {
     const url = 'https://api.mch.weixin.qq.com/v3/certificates';
     const authorization = this.buildAuthorization('GET', url);
     const headers = this.getHeaders(authorization, { 'Content-Type': 'application/json' });
@@ -192,7 +192,7 @@ class Pay extends Base {
     signature: string;
     apiSecret?: string;
   }) {
-    const { timestamp, nonce, body, serial, signature, apiSecret } = params;
+    const { timestamp, nonce, body, serial, signature, apiSecret = this.key } = params;
 
     let publicKey = Pay.certificates[serial];
 
