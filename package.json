@@ -1,6 +1,6 @@
 {
-  "name": "wechatpay-node-v3",
-  "version": "2.2.1",
+  "name": "wechatpay-node-v3-new",
+  "version": "4.0.6",
   "description": "微信支付文档v3",
   "keywords": [
     "node",
@@ -8,13 +8,13 @@
     "微信支付",
     "微信提现"
   ],
-  "homepage": "https://github.com/klover2/wechatpay-node-v3-ts#readme",
+  "homepage": "https://github.com/bobby169/wechatpay-node-v3-ts#readme",
   "bugs": {
-    "url": "https://github.com/klover2/wechatpay-node-v3-ts/issues"
+    "url": "https://github.com/bobby169/wechatpay-node-v3-ts/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/klover2/wechatpay-node-v3-ts.git"
+    "url": "git+https://github.com/bobby169/wechatpay-node-v3-ts.git"
   },
   "license": "MIT",
   "author": "klover",

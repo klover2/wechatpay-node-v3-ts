@@ -19,6 +19,7 @@ import {
 } from './lib/interface';
 import { IcombineH5, IcombineNative, IcombineApp, IcombineJsapi, IcloseSubOrders } from './lib/combine_interface';
 import { BatchesTransfer, FindRefunds, ProfitSharing, Refunds, UploadImages } from './lib/interface-v2';
+import { TransferBills } from './lib/interface-v3';
 import { Base } from './lib/base';
 import { IPayRequest } from './lib/pay-request.interface';
 import { PayRequest } from './lib/pay-request';
@@ -247,9 +248,8 @@ class Pay extends Base {
    */
   public getSignature(method: string, nonce_str: string, timestamp: string, url: string, body?: string | Record<string, any>): string {
     let str = method + '\n' + url + '\n' + timestamp + '\n' + nonce_str + '\n';
-    if (body && body instanceof Object) body = JSON.stringify(body);
-    if (body) str = str + body + '\n';
-    if (method === 'GET') str = str + '\n';
+    let bodyString = body ? JSON.stringify(body) : '';
+    str = str + bodyString + '\n';
     return this.sha256WithRsa(str);
   }
   // jsapi 和 app 支付参数签名 加密自动顺序如下 不能错乱
@@ -720,6 +720,7 @@ class Pay extends Base {
     const headers = this.getHeaders(authorization, { 'Wechatpay-Serial': serial_no || this.serial_no, 'Content-Type': 'application/json' });
     return await this.httpService.post(url, _params, headers);
   }
+
   /**
    * 微信批次单号查询批次单API
    * @documentation 请看文档https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter4_3_2.shtml
@@ -947,6 +948,59 @@ class Pay extends Base {
       },
       headers,
     );
+  }
+
+  /**
+   * 商家转账用户确认模式下，用户申请收款时，商户可通过此接口申请创建转账单
+   */
+  public async transfer_bills(params: TransferBills.Input): Promise<TransferBills.IOutput> {
+    const url = 'https://api.mch.weixin.qq.com/v3/fund-app/mch-transfer/transfer-bills';
+    // 请求参数
+    const _params = {
+      appid: this.appid,
+      ...params,
+    };
+
+    const serial_no = _params?.wx_serial_no;
+    delete _params.wx_serial_no;
+    const authorization = this.buildAuthorization('POST', url, _params);
+
+    const headers = this.getHeaders(authorization, { 'Wechatpay-Serial': serial_no || this.serial_no, 'Content-Type': 'application/json' });
+    return await this.httpService.post(url, _params, headers);
+  }
+
+  /**
+   * 商户通过转账接口发起付款后，在用户确认收款之前可以通过该接口撤销付款
+   */
+  public async transfer_cancel(params: TransferBills.CancelInput): Promise<TransferBills.CancelOutput> {
+    const url = `https://api.mch.weixin.qq.com/v3/fund-app/mch-transfer/transfer-bills/out-bill-no/${params.out_bill_no}/cancel`;
+    const authorization = this.buildAuthorization('POST', url, undefined);
+
+    const headers = this.getHeaders(authorization, {
+      mchid: this.mchid,
+      'Content-Type': 'application/json',
+    });
+    return await this.httpService.post(url, undefined, headers);
+  }
+
+  /**
+   * 商家转账用户确认模式下，根据商户单号查询转账单的详细信息
+   */
+  public async transfer_out_bill_no(params: TransferBills.OutBillNoInput): Promise<TransferBills.BillOutput> {
+    const url = `https://api.mch.weixin.qq.com/v3/fund-app/mch-transfer/transfer-bills/out-bill-no/${params.out_bill_no}`;
+    const authorization = this.buildAuthorization('GET', url);
+    const headers = this.getHeaders(authorization, { mchid: this.mchid });
+    return await this.httpService.get(url, headers);
+  }
+
+  /**
+   * 商家转账用户确认模式下，根据微信转账单号查询转账单的详细信息
+   */
+  public async transfer_bill_no(params: TransferBills.BillNoInput): Promise<TransferBills.BillOutput> {
+    const url = `https://api.mch.weixin.qq.com/v3/fund-app/mch-transfer/transfer-bills/transfer-bill-no/${params.transfer_bill_no}`;
+    const authorization = this.buildAuthorization('GET', url);
+    const headers = this.getHeaders(authorization, { mchid: this.mchid });
+    return await this.httpService.get(url, headers);
   }
 }
 

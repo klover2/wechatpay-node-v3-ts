@@ -1,13 +1,13 @@
 
 
 <p style="text-align: center;">
-  <h1 align="center"><a href="javascript:void(0);">wechatpay-node-v3</a></h1>
+  <h1 align="center"><a href="javascript:void(0);">wechatpay-node-v3-new</a></h1>
 </p>
 
-[![OSCS Status](https://www.oscs1024.com/platform/badge/klover2/wechatpay-node-v3-ts.svg?size=small)](https://www.oscs1024.com/project/klover2/wechatpay-node-v3-ts?ref=badge_small)
-[![npm version](https://badgen.net/npm/v/wechatpay-node-v3)](https://www.npmjs.com/package/wechatpay-node-v3)
-[![npm downloads](https://badgen.net/npm/dm/wechatpay-node-v3)](https://www.npmjs.com/package/wechatpay-node-v3)
-[![contributors](https://img.shields.io/github/contributors/klover2/wechatpay-node-v3-ts)](https://github.com/klover2/wechatpay-node-v3-ts/graphs/contributors)
+[![OSCS Status](https://www.oscs1024.com/platform/badge/klover2/wechatpay-node-v3-new-ts.svg?size=small)](https://www.oscs1024.com/project/klover2/wechatpay-node-v3-new-ts?ref=badge_small)
+[![npm version](https://badgen.net/npm/v/wechatpay-node-v3-new)](https://www.npmjs.com/package/wechatpay-node-v3-new)
+[![npm downloads](https://badgen.net/npm/dm/wechatpay-node-v3-new)](https://www.npmjs.com/package/wechatpay-node-v3-new)
+[![contributors](https://img.shields.io/github/contributors/klover2/wechatpay-node-v3-new-ts)](https://github.com/bobby169/wechatpay-node-v3-ts/graphs/contributors)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # 微信支付v3 支持在ts和js中使用
@@ -24,10 +24,10 @@
 由于官方文档只支持java和php,所以我在这里使用ts简单的封装了一个版本,支持在js或者ts中使用,后续会更加完善这个npm包，谢谢。
 
 ## 使用
-`yarn add wechatpay-node-v3@2.1.8`(也可以用npm,请加上版本号，使用正式版本)
+`yarn add wechatpay-node-v3-new@2.1.8`(也可以用npm,请加上版本号，使用正式版本)
 
 ```bash
-import WxPay from 'wechatpay-node-v3'; // 支持使用require
+import WxPay from 'wechatpay-node-v3-new'; // 支持使用require
 import fs from 'fs';
 import request from 'superagent';
 
@@ -84,10 +84,10 @@ try {
     console.log(error);
   }
 ```
-如果你使用的是nest框架，请结合`nest-wechatpay-node-v3`一起使用。
+如果你使用的是nest框架，请结合`nest-wechatpay-node-v3-new`一起使用。
 
 ## 使用自定义 http 请求
-> import { IPayRequest, Output } from 'wechatpay-node-v3/dist/define';
+> import { IPayRequest, Output } from 'wechatpay-node-v3-new/dist/define';
 
 自己实现 `IPayRequest` 接口，使用如下方法注入
 
@@ -97,7 +97,7 @@ pay.createHttp(...);
 
 
 ## WxPay 介绍
-`import WxPay from 'wechatpay-node-v3';` 或者 `const WxPay = require('wechatpay-node-v3')`
+`import WxPay from 'wechatpay-node-v3-new';` 或者 `const WxPay = require('wechatpay-node-v3-new')`
 
 参数介绍
 |参数名称  |参数介绍  |是否必须|
@@ -120,31 +120,32 @@ pay.createHttp(...);
 以下函数是我针对微信相关接口进行进一步封装，可以直接使用。
 | api名称 | 函数名 |
 |--|--|
-| [h5支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_3_1.shtml) |[transactions_h5](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)  |
-| [native支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_4_1.shtml) |[transactions_native](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_native.md)  |
-| [app支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_1.shtml) |[transactions_app](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_app.md)  |
-| [JSAPI支付 或者 小程序支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_1.shtml) |[transactions_jsapi](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_jsapi.md)  |
-| [查询订单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_1.shtml) |[query](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/query.md)  |
-| [关闭订单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_1.shtml) |[close](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/close.md)  |
-| [申请交易账单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_6.shtml) |[tradebill](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/tradebill.md)  |
-| [申请资金账单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_7.shtml) |[fundflowbill](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/fundflowbill.md)  |
-| [下载账单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_8.shtml) |[downloadBill](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/downloadbill.md)  |
-| [回调解密](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_5.shtml) |[decipher_gcm](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)  |
-|[合单h5支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_2.shtml)|[combine_transactions_h5](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
-|[合单native支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_5.shtml)|[combine_transactions_native](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
-|[合单app支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_1.shtml)|[combine_transactions_app](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
-|[合单JSAPI支付 或者 小程序支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_3.shtml)|[combine_transactions_jsapi](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
-|[查询合单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_11.shtml)|[combine_query](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
-|[关闭合单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_12.shtml)|[combine_close](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
-|[获取序列号]()|[getSN](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)|
-|[申请退款](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_9.shtml)|[refunds](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)|
-|[查询退款](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_10.shtml)|[find_refunds](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)|
-|[签名验证](https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay4_1.shtml)|[verifySign](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/verifySign.md)|
-|[微信提现到零钱](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter4_3_1.shtml)|[batches_transfer](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/batches_transfer.md)|
-|[分账](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter8_1_1.shtml)|[create_profitsharing_orders](https://github.com/klover2/wechatpay-node-v3-ts/blob/master/docs/profitsharing.md)|
-
-
-
+| [h5支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_3_1.shtml) |[transactions_h5](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)  |
+| [native支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_4_1.shtml) |[transactions_native](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/transactions_native.md)  |
+| [app支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_1.shtml) |[transactions_app](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/transactions_app.md)  |
+| [JSAPI支付 或者 小程序支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_1.shtml) |[transactions_jsapi](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/transactions_jsapi.md)  |
+| [查询订单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_1.shtml) |[query](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/query.md)  |
+| [关闭订单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_1.shtml) |[close](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/close.md)  |
+| [申请交易账单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_6.shtml) |[tradebill](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/tradebill.md)  |
+| [申请资金账单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_7.shtml) |[fundflowbill](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/fundflowbill.md)  |
+| [下载账单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_8.shtml) |[downloadBill](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/downloadbill.md)  |
+| [回调解密](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_5.shtml) |[decipher_gcm](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)  |
+|[合单h5支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_2.shtml)|[combine_transactions_h5](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
+|[合单native支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_5.shtml)|[combine_transactions_native](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
+|[合单app支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_1.shtml)|[combine_transactions_app](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
+|[合单JSAPI支付 或者 小程序支付](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_3.shtml)|[combine_transactions_jsapi](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
+|[查询合单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_11.shtml)|[combine_query](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
+|[关闭合单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_12.shtml)|[combine_close](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/combine.md)|
+|[获取序列号]()|[getSN](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)|
+|[申请退款](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_9.shtml)|[refunds](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)|
+|[查询退款](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_10.shtml)|[find_refunds](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/transactions_h5.md)|
+|[签名验证](https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay4_1.shtml)|[verifySign](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/verifySign.md)|
+|[微信提现到零钱](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter4_3_1.shtml)|[batches_transfer](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/batches_transfer.md)|
+|[分账](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter8_1_1.shtml)|[create_profitsharing_orders](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/profitsharing.md)|
+|[用户确认模式，发起商家转账](https://pay.weixin.qq.com/doc/v3/merchant/4012716434)|[transfer_bills](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/transfer_bills.md)|
+|[用户确认模式，撤销转账](https://pay.weixin.qq.com/doc/v3/merchant/4012716458)|[transfer_bills](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/transfer_bills.md)|
+|[用户确认模式，商户单号查询转账单](https://pay.weixin.qq.com/doc/v3/merchant/4012716437)|[transfer_bills](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/transfer_bills.md)|
+|[用户确认模式，微信单号查询转账单](https://pay.weixin.qq.com/doc/v3/merchant/4012716457)|[transfer_bills](https://github.com/bobby169/wechatpay-node-v3-ts/blob/master/docs/transfer_bills.md)|
 ## 版本介绍
 | 版本号 | 版本介绍 |
 |--|--|
@@ -177,18 +178,20 @@ pay.createHttp(...);
 |v2.1.8|修复回调签名key错误|
 |v2.2.0|修复回调解密报Unsupported state or unable to authenticate data |
 |v2.2.1|上传图片 |
+|v3.0.0|增家商家转账用户确认模式
 
 ## 文档
 [v2支付文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)
 [v3支付文档](https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml)
+[商家转账用户确认模式](https://pay.weixin.qq.com/doc/v3/merchant/4012711988)
 
 
 ## 贡献
-<a href="https://github.com/klover2/wechatpay-node-v3-ts/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=klover2/wechatpay-node-v3-ts" />
+<a href="https://github.com/bobby169/wechatpay-node-v3-ts/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=klover2/wechatpay-node-v3-new-ts" />
 </a>
 
-欢迎提[存在的Bug或者意见](https://github.com/klover2/wechatpay-node-v3-ts/issues)。
+欢迎提[存在的Bug或者意见](https://github.com/bobby169/wechatpay-node-v3-ts/issues)。
 
 
 
