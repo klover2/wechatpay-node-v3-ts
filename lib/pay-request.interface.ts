@@ -7,7 +7,7 @@ export interface IPayRequest {
    * @param params body
    * @param headers 请求头
    */
-  post(url: string, params: Record<string, any>, headers: Record<string, any>): Promise<Output>;
+  post(url: string, params: Record<string, any>|undefined, headers: Record<string, any>): Promise<Output>;
   /**
    * 上传文件
    * @param url url
